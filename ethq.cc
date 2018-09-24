@@ -28,6 +28,11 @@
 #include "ethtool++.h"
 #include "util.h"
 
+//
+// the four combinations of rx/tx and packets/bytes are stored
+// in this union, so that they can either be addressed by index
+// or by name
+//
 typedef union {
 	uint64_t		counts[4];
 	struct {
@@ -159,6 +164,9 @@ void EthQApp::build_queue_map(const Ethtool::stringset_t& names)
 	}
 }
 
+//
+// return the latest (absolute) counters for the four values for each queue
+//
 stats_list_t EthQApp::get_stats()
 {
 	stats_list_t results(qcount);
@@ -177,6 +185,10 @@ stats_list_t EthQApp::get_stats()
 	return results;
 }
 
+//
+// get the latest counters, calculate difference from the previous set,
+// and then store the latest values for next time around
+//
 void EthQApp::get_deltas()
 {
 	stats_list_t stats = get_stats();
