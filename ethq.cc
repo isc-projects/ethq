@@ -17,6 +17,7 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <regex>
 
 #include <poll.h>
 
@@ -75,28 +76,29 @@ public:
 
 void EthQApp::build_queue_map(const Ethtool::stringset_t& names)
 {
+	std::regex re_X540("^(rx|tx)_queue_(\\d+)_(bytes|packets)$");
+	std::regex re_X710("^(rx|tx)-(\\d+)\\.\\1_(bytes|packets)$");
+
 	for (size_t i = 0, n = names.size(); i < n; ++i) {
 
 		auto& name = names[i];
+		std::smatch match;
 
-		// match "tx-2.tx_packets"
-		auto tx = name.find("tx-") == 0;
-		auto rx = name.find("rx-") == 0;
-		if (!(rx || tx)) continue;
+		if (!std::regex_match(name, match, re_X540) && 
+		    !std::regex_match(name, match, re_X710))
+		{
+			continue;
+		}
 
-		auto dot = name.find('.', 3);
-		if (dot == std::string::npos) continue;
+		// get queue direction
+		auto dir = std::ssub_match(match[1]).str();
+		auto rx = (dir == "rx");
 
-		// everything between '-' and '.'
-		size_t eon;
-		auto tmp = name.substr(3, dot - 3);
-		size_t queue = std::stoi(tmp, &eon);
-		if (eon < tmp.length()) continue;
+		// get queue number
+		size_t queue = std::stoi(std::ssub_match(match[2]).str());
 
-		// look for stuff after the underscore
-		auto under = name.find('_', dot + 3);
-		if (under == std::string::npos) continue;
-		auto type = name.substr(under + 1);
+		// get metric type
+		auto type = std::ssub_match(match[3]).str();
 
 		// calculate offset into the four entry structure
 		uint8_t offset = 0;
