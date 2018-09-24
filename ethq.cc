@@ -21,9 +21,9 @@
 
 #include <poll.h>
 
-#include <ncurses/ncurses.h>
-#include <ncurses/cursesapp.h>
-#include <ncurses/cursesp.h>
+#include <ncurses.h>
+#include <cursesapp.h>
+#include <cursesp.h>
 
 #include "ethtool++.h"
 #include "util.h"
@@ -41,7 +41,7 @@ typedef union {
 typedef std::vector<queuestats_t>		stats_list_t;
 
 // index to queue table, offset to value within
-typedef std::pair<size_t, uint8_t>		queue_entry_t;
+typedef std::pair<size_t, size_t>		queue_entry_t;
 
 // string entry number -> queue_entry_t
 typedef std::map<size_t, queue_entry_t>		queue_map_t;
@@ -76,44 +76,90 @@ public:
 
 void EthQApp::build_queue_map(const Ethtool::stringset_t& names)
 {
-	std::regex re_X540("^(rx|tx)_queue_(\\d+)_(bytes|packets)$");
-	std::regex re_X710("^(rx|tx)-(\\d+)\\.\\1_(bytes|packets)$");
+	// some drivers (e.g. vmnet3) store the queue number in a key-value pair
+	auto raw = ethtool->stats();
 
+	// regexes for matching known Intel cards
+	std::regex re_ixgbe("^(rx|tx)_queue_(\\d+)_(bytes|packets)$");
+	std::regex re_i40e("^(rx|tx)-(\\d+)\\.\\1_(bytes|packets)$");
+
+	// regexes for VMware virtual interface (vmxnet3)
+	std::regex re_vmxnet3_queue("^(Rx|Tx) Queue#$");
+	std::regex re_vmxnet3_value("^\\s*ucast (pkts|bytes) (rx|tx)$");
+
+	// values stored outside the loop because on some drivers
+	// they need to be retained across iterations
+
+	auto rx = false;
+	auto bytes = false;
+	size_t queue = -1;
+
+	//
+	// iterate through all of the stats looking for names that
+	// match the recognised strings
+	//
 	for (size_t i = 0, n = names.size(); i < n; ++i) {
 
 		auto& name = names[i];
+		bool want = false;
+
 		std::smatch match;
-
-		if (!std::regex_match(name, match, re_X540) && 
-		    !std::regex_match(name, match, re_X710))
+		if (std::regex_match(name, match, re_ixgbe) ||
+		    std::regex_match(name, match, re_i40e))
 		{
-			continue;
+			// get queue direction
+			auto dir = std::ssub_match(match[1]).str();
+			rx = (dir == "rx");
+
+			// get queue number
+			queue = std::stoi(std::ssub_match(match[2]).str());
+
+			// get metric type
+			auto type = std::ssub_match(match[3]).str();
+			bytes = (type == "bytes");
+
+			want = true;
+
+		} else if (std::regex_match(name, match, re_vmxnet3_queue)) {
+
+			// get queue direction
+			auto dir = std::ssub_match(match[1]).str();
+			rx = (dir == "Rx");
+
+			// get queue number
+			queue = raw[i];
+
+			// we don't want this, just the fields extracted above
+			want = false;
+
+		} else if (std::regex_match(name, match, re_vmxnet3_value)) {
+
+			// get metric type
+			auto type = std::ssub_match(match[1]).str();
+			bytes = (type == "bytes");
+
+			want = true;
+
 		}
 
-		// get queue direction
-		auto dir = std::ssub_match(match[1]).str();
-		auto rx = (dir == "rx");
+		//
+		// remember the individual rows that make up the four stats
+		// values for each NIC queue
+		//
+		if (want) {
+			// calculate offset into the four entry structure
+			auto offset = static_cast<size_t>(rx) + 2 * static_cast<size_t>(bytes);
 
-		// get queue number
-		size_t queue = std::stoi(std::ssub_match(match[2]).str());
+			// and populate it
+			qmap[i] = queue_entry_t { queue, offset };
 
-		// get metric type
-		auto type = std::ssub_match(match[3]).str();
-
-		// calculate offset into the four entry structure
-		uint8_t offset = 0;
-		if (rx) {
-			offset += 1;
+			// count the number of queues
+			qcount = std::max(queue + 1, qcount);
 		}
-		if (type == "bytes") {
-			offset += 2;
-		}
+	}
 
-		// and populate it
-		qmap[i] = queue_entry_t { queue, offset };
-
-		// count the number of queues
-		qcount = std::max(queue + 1, qcount);
+	for (const auto& q: qmap) {
+		std::cerr << q.first << " " << q.second.first << " " << q.second.second << std::endl;
 	}
 }
 
@@ -164,7 +210,7 @@ void EthQApp::handleArgs(int argc, char *argv[])
 	build_queue_map(ethtool->stringset(ETH_SS_STATS));
 
 	if (qcount == 0) {
-		throw std::runtime_error("No NIC queues found");
+		throw std::runtime_error("Unsupported NIC - couldn't parse NIC stats");
 	}
 	delta.reserve(qcount);
 }
