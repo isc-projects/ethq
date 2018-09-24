@@ -157,10 +157,6 @@ void EthQApp::build_queue_map(const Ethtool::stringset_t& names)
 			qcount = std::max(queue + 1, qcount);
 		}
 	}
-
-	for (const auto& q: qmap) {
-		std::cerr << q.first << " " << q.second.first << " " << q.second.second << std::endl;
-	}
 }
 
 stats_list_t EthQApp::get_stats()
