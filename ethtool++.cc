@@ -77,7 +77,7 @@ Ethtool::stringset_t Ethtool::stringset(ethtool_stringset ss)
 	result.reserve(count);
 	for (unsigned int i = 0; i < gstrings.len; ++i) {
 		auto p = reinterpret_cast<char *>(gstrings.data) + i * ETH_GSTRING_LEN;
-		result.emplace_back(std::string(p));	// assume NUL terminated
+		result.emplace_back(p);		// assume NUL terminated
 	}
 
 	return result;
