@@ -270,7 +270,7 @@ void EthQApp::redraw(time_t now)
 	panel->move(row++, col);
 	panel->printw("%5s %12ld %12ld %12ld %12ld", "Total", q[0], q[1], q[2], q[3]);
 	panel->move(row++, col);
-	panel->printw("%5s %12s %12s %12.3f %12.3f", "Gbps", "", "", 8.0 * q[2] / 1e9, 8.0 * q[3] / 1e9);
+	panel->printw("%5s %12s %12s %12.3f %12.3f", "Mbps", "", "", 8.0 * q[2] / 1e6, 8.0 * q[3] / 1e6);
 
 	panel->refresh();
 }
