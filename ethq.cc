@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <regex>
 
+#include <time.h>
 #include <poll.h>
 
 #include <ncurses.h>
@@ -54,6 +55,7 @@ typedef std::map<size_t, queue_entry_t>		queue_map_t;
 class EthQApp : public NCursesApplication {
 
 private:
+	std::string		ifname;
 	Ethtool*		ethtool = nullptr;
 	queue_map_t		qmap;
 	size_t			qcount = 0;
@@ -63,7 +65,7 @@ private:
 
 private:
 	NCursesPanel*		panel;
-	void			redraw();
+	void			redraw(time_t now);
 
 private:
 	std::vector<std::string> get_string_names();
@@ -214,7 +216,9 @@ void EthQApp::handleArgs(int argc, char *argv[])
 		throw std::runtime_error("usage: ethq <interface>");
 	}
 
-	ethtool = new Ethtool(argv[1]);
+	ifname.assign(argv[1]);
+	ethtool = new Ethtool(ifname);
+
 	build_queue_map(ethtool->stringset(ETH_SS_STATS));
 
 	if (qcount == 0) {
@@ -232,11 +236,20 @@ EthQApp::~EthQApp()
 	delete ethtool;
 }
 
-void EthQApp::redraw()
+void EthQApp::redraw(time_t now)
 {
 	static auto bar = "------------";
 	const int col = 4;
-	int row = 1;
+	int row = 0;
+
+	// get current time
+	char timebuf[26];
+	strftime(timebuf, sizeof timebuf, "%Y-%m-%d %T", gmtime(&now));
+
+	panel->move(row++, col);
+	panel->printw("%-30s %26s", ifname.c_str(), timebuf);
+
+	row++;
 
 	panel->move(row++, col);
 	panel->printw("%5s %12s %12s %12s %12s", "Queue", "TX packets", "RX packets", "TX bytes", "RX bytes");
@@ -270,19 +283,24 @@ bool key_pressed()
 
 int EthQApp::run()
 {
+	auto clockid = CLOCK_REALTIME;
+
 	prev = get_stats();
 
 	curs_set(0);
 	panel = new NCursesPanel();
 
 	timespec t;
-	clock_gettime(CLOCK_MONOTONIC, &t);
+	clock_gettime(clockid, &t);
+
 	while (true) {
+
 		t.tv_nsec = 0;
 		t.tv_sec += 1;
-		clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &t, nullptr);
+		clock_nanosleep(clockid, TIMER_ABSTIME, &t, nullptr);
+
 		get_deltas();
-		redraw();
+		redraw(t.tv_sec);
 
 		if (key_pressed()) {
 			auto ch = panel->getch();
