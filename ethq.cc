@@ -22,10 +22,7 @@
 #include <getopt.h>
 #include <time.h>
 #include <poll.h>
-
 #include <ncurses.h>
-#include <cursesapp.h>
-#include <cursesp.h>
 
 #include "ethtool++.h"
 #include "util.h"
@@ -53,13 +50,13 @@ typedef std::pair<size_t, size_t>		queue_entry_t;
 // string entry number -> queue_entry_t
 typedef std::map<size_t, queue_entry_t>		queue_map_t;
 
-class EthQApp : public NCursesApplication {
+class EthQApp {
 
-public:
+private:	// command line parameters
 	std::string		ifname;
 	bool			winmode = true;
 
-private:
+private:	// network state
 	Ethtool*		ethtool = nullptr;
 	size_t			qcount = 0;
 	queue_map_t		qmap;
@@ -67,7 +64,13 @@ private:
 	stats_list_t		delta;
 	queuestats_t		total;
 
-private:
+	std::vector<std::string> get_string_names();
+	void			build_queue_map(const Ethtool::stringset_t& names);
+
+	stats_list_t		get_stats();
+	void			get_deltas();
+
+private:	// time handling
 	timespec		now;
 	clockid_t		clock = CLOCK_REALTIME;
 	char			timebuf[26];
@@ -75,24 +78,22 @@ private:
 	void			time_get();
 	void			time_wait();
 
-private:
-	NCursesPanel*		panel;
-	void			redraw_win();
-	void			redraw_text();
+private:	// text mode handling
+	void			textmode_init();
+	void			textmode_redraw();
 
-private:
-	std::vector<std::string> get_string_names();
-	void			build_queue_map(const Ethtool::stringset_t& names);
-	stats_list_t		get_stats();
-	void			get_deltas();
+private:	// curses mode handling
+	WINDOW*			sub;
+	void			winmode_redraw();
+	void			winmode_init();
+	bool			winmode_should_exit();
+	void			winmode_exit();
 
 public:
-				EthQApp();
+				EthQApp(int argc, char *argv[]);
 				~EthQApp();
-	void			handleArgs(int argc, char *argv[]);
 
-	void			run_text();
-	int			run();
+	void			run();
 };
 
 void EthQApp::build_queue_map(const Ethtool::stringset_t& names)
@@ -224,7 +225,8 @@ void EthQApp::get_deltas()
 	std::swap(stats, prev);
 }
 
-static void usage(int status = EXIT_SUCCESS) {
+static void usage(int status = EXIT_SUCCESS)
+{
 	using namespace std;
 
 	cerr << "usage: ethq [-t] <interface>" << endl;
@@ -232,7 +234,128 @@ static void usage(int status = EXIT_SUCCESS) {
 	exit(status);
 }
 
-void EthQApp::handleArgs(int argc, char *argv[])
+void EthQApp::winmode_redraw()
+{
+	static auto bar = "------------";
+	const int x = 0;
+	int y = 0;
+
+	auto w = sub;
+	wclear(w);
+
+	// show current time
+	wmove(w, y++, x);
+	wprintw(w, "%-30s %26s", ifname.c_str(), timebuf);
+
+	y++;
+	wmove(w, y++, x);
+	wprintw(w, "%5s %12s %12s %12s %12s", "Queue", "TX packets", "RX packets", "TX bytes", "RX bytes");
+
+	wmove(w, y++, x);
+	wprintw(w, "%5s %12s %12s %12s %12s", "-----", bar, bar, bar, bar);
+
+	for (size_t i = 0; i < qcount; ++i) {
+		auto& q = delta[i].counts;
+		wmove(w, y++, x);
+		wprintw(w, "%5ld %12ld %12ld %12ld %12ld", i, q[0], q[1], q[2], q[3]);
+	}
+
+	wmove(w, y++, x);
+	wprintw(w, "%5s %12s %12s %12s %12s", "-----", bar, bar, bar, bar);
+
+	auto& q = total.counts;
+	wmove(w, y++, x);
+	wprintw(w, "%5s %12ld %12ld %12ld %12ld", "Total", q[0], q[1], q[2], q[3]);
+	wmove(w, y++, x);
+	wprintw(w, "%5s %12s %12s %12.3f %12.3f", "Mbps", "", "", 8.0 * q[2] / 1e6, 8.0 * q[3] / 1e6);
+
+	wrefresh(w);
+}
+
+void EthQApp::textmode_init()
+{
+	printf("%2s %12s %12s %12s %12s\n", " q", "txp", "rxp", "txb", "rxb");
+}
+
+void EthQApp::textmode_redraw()
+{
+	for (size_t i = 0; i < qcount; ++i) {
+		auto& q = delta[i].counts;
+		printf("%2ld %12ld %12ld %12ld %12ld\n", i, q[0], q[1], q[2], q[3]);
+	}
+
+	auto& q = total.counts;
+	printf("%2s %12ld %12ld %12ld %12ld\n\n", "T", q[0], q[1], q[2], q[3]);
+}
+
+void EthQApp::time_get()
+{
+	clock_gettime(clock, &now);
+}
+
+void EthQApp::time_wait()
+{
+	now.tv_nsec = 0;
+	now.tv_sec += 1;
+
+	while (true) {
+		auto res = clock_nanosleep(clock, TIMER_ABSTIME, &now, nullptr);
+		if (res == 0) {
+			break;
+		} else if (res == EINTR) {
+			continue;
+		} else {
+			errno = res;
+			throw_errno("clock_nanosleep");
+		}
+	}
+	strftime(timebuf, sizeof timebuf, "%Y-%m-%d %T", gmtime(&now.tv_sec));
+}
+
+bool EthQApp::winmode_should_exit()
+{
+	auto ch = ::getch();
+	return (ch == 'q' || ch == 'Q');
+}
+
+void EthQApp::winmode_init()
+{
+	initscr();
+	cbreak();
+	noecho();
+	nonl();
+	nodelay(stdscr, TRUE);
+	intrflush(stdscr, FALSE);
+	keypad(stdscr, TRUE);
+	curs_set(0);
+
+	sub = newwin(qcount + 8, 58, 1, 1);
+}
+
+void EthQApp::winmode_exit()
+{
+	endwin();
+}
+
+void EthQApp::run()
+{
+	prev = get_stats();
+	time_get();
+
+	while (true) {
+		if (winmode && winmode_should_exit()) break;
+		time_wait();
+		get_deltas();
+
+		if (winmode) {
+			winmode_redraw();
+		} else {
+			textmode_redraw();
+		}
+	}
+}
+
+EthQApp::EthQApp(int argc, char *argv[]) : qcount(0)
 {
 	int opt;
 
@@ -261,122 +384,20 @@ void EthQApp::handleArgs(int argc, char *argv[])
 		throw std::runtime_error("Unsupported NIC - couldn't parse NIC stats");
 	}
 	delta.reserve(qcount);
-}
-void EthQApp::redraw_win()
-{
-	static auto bar = "------------";
-	const int col = 4;
-	int row = 0;
 
-	// get current time
-
-	panel->move(row++, col);
-	panel->printw("%-30s %26s", ifname.c_str(), timebuf);
-
-	row++;
-	panel->move(row++, col);
-	panel->printw("%5s %12s %12s %12s %12s", "Queue", "TX packets", "RX packets", "TX bytes", "RX bytes");
-
-	panel->move(row++, col);
-	panel->printw("%5s %12s %12s %12s %12s", "-----", bar, bar, bar, bar);
-
-	for (size_t i = 0; i < qcount; ++i) {
-		auto& q = delta[i].counts;
-		panel->move(row++, col);
-		panel->printw("%5ld %12ld %12ld %12ld %12ld", i, q[0], q[1], q[2], q[3]);
+	if (winmode) {
+		winmode_init();
+	} else {
+		textmode_init();
 	}
-
-	panel->move(row++, col);
-	panel->printw("%5s %12s %12s %12s %12s", "-----", bar, bar, bar, bar);
-
-	auto& q = total.counts;
-	panel->move(row++, col);
-	panel->printw("%5s %12ld %12ld %12ld %12ld", "Total", q[0], q[1], q[2], q[3]);
-	panel->move(row++, col);
-	panel->printw("%5s %12s %12s %12.3f %12.3f", "Mbps", "", "", 8.0 * q[2] / 1e6, 8.0 * q[3] / 1e6);
-
-	panel->refresh();
-}
-
-void EthQApp::redraw_text()
-{
-	for (size_t i = 0; i < qcount; ++i) {
-		auto& q = delta[i].counts;
-		printf("%2ld %12ld %12ld %12ld %12ld\n", i, q[0], q[1], q[2], q[3]);
-	}
-
-	auto& q = total.counts;
-	printf("%2s %12ld %12ld %12ld %12ld\n\n", "T", q[0], q[1], q[2], q[3]);
-}
-
-static bool key_pressed()
-{
-	static struct pollfd fds = { fileno(stdin), POLLIN, 0 };
-	return poll(&fds, 1, 0) > 0;
-}
-
-void EthQApp::time_get()
-{
-	clock_gettime(clock, &now);
-}
-
-void EthQApp::time_wait()
-{
-	now.tv_nsec = 0;
-	now.tv_sec += 1;
-	clock_nanosleep(clock, TIMER_ABSTIME, &now, nullptr);
-	strftime(timebuf, sizeof timebuf, "%Y-%m-%d %T", gmtime(&now.tv_sec));
-}
-
-void EthQApp::run_text()
-{
-	printf("%2s %12s %12s %12s %12s\n", " q", "txp", "rxp", "txb", "rxb");
-
-	prev = get_stats();
-	time_get();
-	while (true) {
-		time_wait();
-		get_deltas();
-		redraw_text();
-	}
-}
-
-int EthQApp::run()
-{
-	try {
-		curs_set(0);
-		panel = new NCursesPanel();
-
-		prev = get_stats();
-		time_get();
-		while (true) {
-			time_wait();
-			get_deltas();
-			redraw_win();
-			if (key_pressed()) {
-				auto ch = panel->getch();
-				if (ch == 'q' || ch == 'Q') {
-					break;
-				}
-			}
-		}
-
-	} catch (...) {
-		endwin();
-		throw(std::current_exception());
-	}
-
-	endwin();
-
-	return 0;
-}
-
-EthQApp::EthQApp() : NCursesApplication(), qcount(0)
-{
 }
 
 EthQApp::~EthQApp()
 {
+	if (winmode) {
+		winmode_exit();
+	}
+
 	delete ethtool;
 }
 
@@ -386,19 +407,8 @@ int main(int argc, char *argv[])
 	int res = EXIT_SUCCESS;
 
 	try {
-		EthQApp app;
-		app.handleArgs(argc, argv);
-		if (app.winmode) {
-			res = app();
-		} else {
-			app.run_text();
-		}
-	} catch (const NCursesException *e) {
-		std::cerr << e->message << std::endl;
-		res = e->errorno;
-	} catch (const NCursesException &e) {
-		std::cerr << e.message << std::endl;
-		res = e.errorno;
+		EthQApp app(argc, argv);
+		app.run();
 	} catch (const std::exception& e) {
 		std::cerr << "error: " << e.what() << std::endl;
 		res = EXIT_FAILURE;

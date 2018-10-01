@@ -2,7 +2,7 @@ CXXFLAGS	= -O3 -std=c++11 -Wall -Werror
 
 LDFLAGS		=
 
-LIBS_CURSES	= -lpanel -lncurses++ -lncurses
+LIBS_CURSES	= -lncurses
 
 TARGETS		= ethq
 
