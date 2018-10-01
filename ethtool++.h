@@ -12,6 +12,7 @@
 #pragma once
 
 #include <vector>
+#include <map>
 #include <string>
 
 #include <net/if.h>
@@ -22,11 +23,13 @@ class Ethtool {
 public:
 	typedef std::vector<std::string> stringset_t;
 	typedef std::vector<__u64> stats_t;
+	typedef std::map<int, size_t> stringset_size_t;
 
 private:
 	int			fd;
 	ifreq			ifr;
-	ssize_t			stats_size;
+	stringset_size_t	sizes;
+	ethtool_drvinfo		drvinfo;
 
 private:
 	void			ioctl(void *data);
@@ -40,4 +43,6 @@ public:
 	stringset_t		stringset(ethtool_stringset);
 	stats_t			stats();
 
+	std::string		driver()	{ return std::string(drvinfo.driver); };
+	std::string		version()	{ return std::string(drvinfo.version); };
 };

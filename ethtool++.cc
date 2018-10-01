@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <cstring>
 
+#include <iostream>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
@@ -31,6 +32,12 @@ void Ethtool::ioctl(void* data)
 
 size_t Ethtool::stringset_size(ethtool_stringset ss)
 {
+	// memoize the table
+	auto iter = sizes.find(ss);
+	if (iter != sizes.end()) {
+		return iter->second;
+	}
+
 	// allocate memory on stack
 	auto size = sizeof(ethtool_sset_info) + sizeof(__u32);
 	auto p = reinterpret_cast<char*>(alloca(size));
@@ -48,13 +55,16 @@ size_t Ethtool::stringset_size(ethtool_stringset ss)
 	sset_info.sset_mask = (1 << ss);
 	ioctl(&sset_info);
 
-	return sset_info.data[0];
+	auto result = sset_info.data[0];
+	sizes[ss] = result;
+
+	return result;
 }
 
 Ethtool::stringset_t Ethtool::stringset(ethtool_stringset ss)
 {
-	// determine size (but we already know the stats size)
-	size_t count = (ss == ETH_SS_STATS) ? stats_size : stringset_size(ss);
+	// determine size
+	size_t count = stringset_size(ss);
 
 	// allocate sufficient memory on stack
 	auto size = sizeof(ethtool_gstrings) + count * ETH_GSTRING_LEN;
@@ -85,8 +95,10 @@ Ethtool::stringset_t Ethtool::stringset(ethtool_stringset ss)
 
 Ethtool::stats_t Ethtool::stats()
 {
+	size_t count = stringset_size(ETH_SS_STATS);
+
 	// allocate memory on stack
-	auto size = sizeof(ethtool_stats) + stats_size * sizeof(__u64);
+	auto size = sizeof(ethtool_stats) + count * sizeof(__u64);
 	auto p = reinterpret_cast<char *>(alloca(size));
 	if (!p) {
 		throw_errno("alloca");
@@ -101,13 +113,13 @@ Ethtool::stats_t Ethtool::stats()
 	ioctl(&stats);
 
 	// build the result set
-	stats_t result(stats_size);
+	stats_t result(count);
 	std::copy(stats.data, stats.data + stats.n_stats, result.begin());
 
 	return result;
 }
 
-Ethtool::Ethtool(const std::string& ifname) : stats_size(0)
+Ethtool::Ethtool(const std::string& ifname)
 {
 	fd = ::socket(AF_INET, SOCK_DGRAM, 0);
 	if (fd < 0) {
@@ -116,7 +128,9 @@ Ethtool::Ethtool(const std::string& ifname) : stats_size(0)
 
 	stpncpy(ifr.ifr_name, ifname.c_str(), IFNAMSIZ);
 
-	stats_size = stringset_size(ETH_SS_STATS);
+	// retrieve the driver information
+	drvinfo.cmd = ETHTOOL_GDRVINFO;
+	ioctl(&drvinfo);
 }
 
 Ethtool::~Ethtool()

@@ -16,6 +16,6 @@ ethq:		ethq.o ethtool++.o util.o
 clean:
 	$(RM) $(TARGETS) *.o
 
-ethtool++.o:	ethtool++.h
-
+ethq.o:		ethtool++.h util.h
+ethtool++.o:	ethtool++.h util.h
 util.o:		util.h
