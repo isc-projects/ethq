@@ -273,6 +273,10 @@ void EthQApp::winmode_redraw()
 	nextline();
 
 	for (size_t i = 0; i < qcount; ++i) {
+		// skip quiescent queues
+		auto& p = prev[i].counts;
+		if (p[0] == 0 && p[1] == 0) continue;
+
 		auto& q = delta[i].counts;
 		wprintw(w, fmt_nnnnn, i, q[0], q[1], q[2], q[3]);
 		nextline();
@@ -298,6 +302,10 @@ void EthQApp::textmode_init()
 void EthQApp::textmode_redraw()
 {
 	for (size_t i = 0; i < qcount; ++i) {
+		// skip quiescent queues
+		auto& p = prev[i].counts;
+		if (p[0] == 0 && p[1] == 0) continue;
+
 		auto& q = delta[i].counts;
 		printf(fmt_nnnnn, i, q[0], q[1], q[2], q[3]);
 	}
