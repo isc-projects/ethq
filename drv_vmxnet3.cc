@@ -1,0 +1,60 @@
+/*
+ * Copyright (C) Internet Systems Consortium, Inc. ("ISC")
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * See the COPYRIGHT file distributed with this work for additional
+ * information regarding copyright ownership.
+ */
+
+#include "parser.h"
+
+class VMXNet3Parser : public StatefulParser {
+
+private:
+	std::regex	re1;
+	std::regex	re2;
+	std::smatch	ma;
+
+	std::string     ms(size_t n) {
+		return std::ssub_match(ma[n]).str();
+	}
+
+public:
+	VMXNet3Parser()
+	{
+		save("vmxnet3");
+		re1.assign("^(Rx|Tx) Queue#$");
+		re2.assign("^\\s*ucast (pkts|bytes) (rx|tx)$");
+	}
+
+	bool match(const std::string& key, size_t value, size_t& queue, bool& rx, bool& bytes) {
+
+		// check for match againt queue number
+		if (std::regex_match(key, ma, re1)) {
+			this->queue = value;
+			this->rx = (ms(1) == "Rx");
+			return false;
+		}
+
+		// check for data entry
+		bool found = std::regex_match(key, ma, re2);
+		if (found) {
+			this->bytes = (ms(1) == "bytes");
+		}
+
+		// copy state to caller
+		if (found) {
+			queue = this->queue;
+			rx = this->rx;
+			bytes = this->bytes;
+		}
+
+		return found;
+	}
+
+};
+
+static VMXNet3Parser vmxnet3;

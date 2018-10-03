@@ -7,10 +7,11 @@ LIBS_CURSES	= -lncurses
 TARGETS		= ethq
 
 COMMON_OBJS	= timer.o util.o
+DRIVER_OBJS	= drv_intel.o drv_vmxnet3.o
 
 all:		$(TARGETS)
 
-ethq:		ethq.o ethtool++.o parser.o util.o
+ethq:		ethq.o ethtool++.o parser.o util.o $(DRIVER_OBJS)
 	$(CXX) -o $@ $^ $(CXXFLAGS) $(LDFLAGS) $(LIBS_CURSES)
 
 clean:
@@ -20,3 +21,4 @@ ethq.o:		ethtool++.h util.h parser.h
 parser.o:	parser.h
 ethtool++.o:	ethtool++.h util.h
 util.o:		util.h
+$(DRIVER_OBJS):	parser.h
