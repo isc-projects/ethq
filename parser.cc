@@ -109,4 +109,6 @@ StringsetParser::parsermap_t StringsetParser::parsers;
 
 RE_DNT_Parser i40e("i40e", "^(rx|tx)-(\\d+)\\.\\1_(bytes|packets)$");
 RE_DNT_Parser ixgbe("ixgbe", "^(rx|tx)_queue_(\\d+)_(bytes|packets)$");
+RE_DNT_Parser igb("igb", "^(rx|tx)_queue_(\\d+)_(bytes|packets)$");
+
 VMXNet3Parser vmxnet3("vmxnet3");
