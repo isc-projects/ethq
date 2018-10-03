@@ -36,15 +36,4 @@ public:
 			return nullptr;
 		}
 	}
-
-	StringsetParser(const std::string& driver) {
-		parsers[driver] = this;
-	}
-
-	StringsetParser() = delete;
-	~StringsetParser() = default;
-	StringsetParser(const StringsetParser&) = delete;
-	StringsetParser(StringsetParser&&) = delete;
-	StringsetParser& operator=(const StringsetParser&) = delete;
-	StringsetParser& operator=(StringsetParser&&) = delete;
 };

@@ -19,8 +19,6 @@ protected:
 	bool		rx = false;
 	bool		bytes = false;
 
-public:
-	StatefulParser(const std::string& name) : StringsetParser(name) {};
 };
 
 class Stringset_RE_Parser : public StringsetParser {
@@ -34,8 +32,7 @@ protected:
 	}
 
 public:
-	Stringset_RE_Parser(const std::string& name, const std::string& match)
-		: StringsetParser(name)
+	Stringset_RE_Parser(const std::string& match)
 	{
 		re.assign(match);
 	}
@@ -44,8 +41,8 @@ public:
 class RE_DNT_Parser : public Stringset_RE_Parser {
 
 public:
-	RE_DNT_Parser(const std::string& name, const std::string& match)
-		: Stringset_RE_Parser(name, match)
+	RE_DNT_Parser(const std::string& match)
+		: Stringset_RE_Parser(match)
 	{
 	}
 
@@ -72,7 +69,7 @@ private:
 	}
 
 public:
-	VMXNet3Parser(const std::string& name) : StatefulParser(name)
+	VMXNet3Parser()
 	{
 		re1.assign("^(Rx|Tx) Queue#$");
 		re2.assign("^\\s*ucast (pkts|bytes) (rx|tx)$");
@@ -105,10 +102,13 @@ public:
 
 };
 
-StringsetParser::parsermap_t StringsetParser::parsers;
+static RE_DNT_Parser intel_generic("^(rx|tx)_queue_(\\d+)_(bytes|packets)$");
+static RE_DNT_Parser intel_i40e("^(rx|tx)-(\\d+)\\.\\1_(bytes|packets)$");
+static VMXNet3Parser vmxnet3;
 
-RE_DNT_Parser i40e("i40e", "^(rx|tx)-(\\d+)\\.\\1_(bytes|packets)$");
-RE_DNT_Parser ixgbe("ixgbe", "^(rx|tx)_queue_(\\d+)_(bytes|packets)$");
-RE_DNT_Parser igb("igb", "^(rx|tx)_queue_(\\d+)_(bytes|packets)$");
-
-VMXNet3Parser vmxnet3("vmxnet3");
+StringsetParser::parsermap_t StringsetParser::parsers = {
+	{ "ixgbe",	&intel_generic },
+	{ "igb",	&intel_generic },
+	{ "i40e",	&intel_i40e },
+	{ "vmxnet3",	&vmxnet3 }
+};
