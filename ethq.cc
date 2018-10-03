@@ -17,7 +17,6 @@
 #include <vector>
 #include <map>
 #include <algorithm>
-#include <regex>
 
 #include <getopt.h>
 #include <time.h>
@@ -25,6 +24,7 @@
 #include <ncurses.h>
 
 #include "ethtool++.h"
+#include "parser.h"
 #include "util.h"
 
 //
@@ -68,7 +68,7 @@ private:	// network state
 	queuestats_t		total;
 
 	std::vector<std::string> get_string_names();
-	void			build_queue_map(const Ethtool::stringset_t& names);
+	void			build_queue_map(StringsetParser *parser, const Ethtool::stringset_t& names);
 
 	stats_list_t		get_stats();
 	void			get_deltas();
@@ -99,25 +99,14 @@ public:
 	void			run();
 };
 
-void EthQApp::build_queue_map(const Ethtool::stringset_t& names)
+void EthQApp::build_queue_map(StringsetParser* parser, const Ethtool::stringset_t& names)
 {
 	// some drivers (e.g. vmnet3) store the queue number in a key-value pair
 	auto raw = ethtool->stats();
 
-	// regexes for matching known Intel cards
-	std::regex re_ixgbe("^(rx|tx)_queue_(\\d+)_(bytes|packets)$");
-	std::regex re_i40e("^(rx|tx)-(\\d+)\\.\\1_(bytes|packets)$");
-
-	// regexes for VMware virtual interface (vmxnet3)
-	std::regex re_vmxnet3_queue("^(Rx|Tx) Queue#$");
-	std::regex re_vmxnet3_value("^\\s*ucast (pkts|bytes) (rx|tx)$");
-
-	// values stored outside the loop because on some drivers
-	// they need to be retained across iterations
-
+	size_t queue = -1;
 	auto rx = false;
 	auto bytes = false;
-	size_t queue = -1;
 
 	//
 	// iterate through all of the stats looking for names that
@@ -125,53 +114,17 @@ void EthQApp::build_queue_map(const Ethtool::stringset_t& names)
 	//
 	for (size_t i = 0, n = names.size(); i < n; ++i) {
 
-		auto& name = names[i];
-		bool want = false;
-
-		std::smatch match;
-		if (std::regex_match(name, match, re_ixgbe) ||
-		    std::regex_match(name, match, re_i40e))
-		{
-			// get queue direction
-			auto dir = std::ssub_match(match[1]).str();
-			rx = (dir == "rx");
-
-			// get queue number
-			queue = std::stoi(std::ssub_match(match[2]).str());
-
-			// get metric type
-			auto type = std::ssub_match(match[3]).str();
-			bytes = (type == "bytes");
-
-			want = true;
-
-		} else if (std::regex_match(name, match, re_vmxnet3_queue)) {
-
-			// get queue direction
-			auto dir = std::ssub_match(match[1]).str();
-			rx = (dir == "Rx");
-
-			// get queue number
-			queue = raw[i];
-
-			// we don't want this, just the fields extracted above
-			want = false;
-
-		} else if (std::regex_match(name, match, re_vmxnet3_value)) {
-
-			// get metric type
-			auto type = std::ssub_match(match[1]).str();
-			bytes = (type == "bytes");
-
-			want = true;
-
-		}
+		//
+		// try to map the stringset entry to a queue
+		//
+		bool found = parser->match(names[i], raw[i], queue, rx, bytes);
 
 		//
 		// remember the individual rows that make up the four stats
 		// values for each NIC queue
 		//
-		if (want) {
+		if (found) {
+
 			// calculate offset into the four entry structure
 			auto offset = static_cast<size_t>(rx) + 2 * static_cast<size_t>(bytes);
 
@@ -401,16 +354,24 @@ EthQApp::EthQApp(int argc, char *argv[]) : qcount(0)
 		usage(EXIT_FAILURE);
 	}
 
+	// connect to the ethtool API
 	ifname.assign(argv[optind]);
 	ethtool = new Ethtool(ifname);
 
-	build_queue_map(ethtool->stringset(ETH_SS_STATS));
+	// find the write code to parse this class of NIC
+	auto parser = StringsetParser::find(ethtool->driver());
+	if (!parser) {
+		throw std::runtime_error("Unsupported NIC driver");
+	}
 
+	// parse the list of stats strings for this driver
+	build_queue_map(parser, ethtool->stringset(ETH_SS_STATS));
 	if (qcount == 0) {
-		throw std::runtime_error("Unsupported NIC - couldn't parse NIC stats");
+		throw std::runtime_error("couldn't parse NIC stats");
 	}
 	delta.reserve(qcount);
 
+	// set up display mode
 	if (winmode) {
 		winmode_init();
 	} else {

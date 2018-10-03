@@ -10,12 +10,13 @@ COMMON_OBJS	= timer.o util.o
 
 all:		$(TARGETS)
 
-ethq:		ethq.o ethtool++.o util.o
+ethq:		ethq.o ethtool++.o parser.o util.o
 	$(CXX) -o $@ $^ $(CXXFLAGS) $(LDFLAGS) $(LIBS_CURSES)
 
 clean:
 	$(RM) $(TARGETS) *.o
 
-ethq.o:		ethtool++.h util.h
+ethq.o:		ethtool++.h util.h parser.h
+parser.o:	parser.h
 ethtool++.o:	ethtool++.h util.h
 util.o:		util.h
