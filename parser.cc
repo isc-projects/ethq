@@ -54,11 +54,18 @@ std::string RegexParser::ms(size_t n) {
 
 bool RegexParser::match(const std::string& key, size_t value, size_t& queue, bool& rx, bool& bytes)
 {
-	auto found = std::regex_match(key, ma, re);
+	// transform key to lower case
+	std::string lower(key);
+	std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+
+	auto found = std::regex_match(lower, ma, re);
 	if (found) {
+		// extract direction and type
 		rx = (ms(order[0]) == "rx");
-		queue = std::stoi(ms(order[1]));
 		bytes = (ms(order[2]) == "bytes");
+
+		// allow queue to be unspecifird for single queue NICs
+		queue = order[1] ? std::stoi(ms(order[1])) : 0;
 	}
 	return found;
 }
