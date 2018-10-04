@@ -42,7 +42,7 @@ typedef union {
 	} q;
 } queuestats_t;
 
-typedef std::vector<queuestats_t>		stats_list_t;
+typedef std::vector<queuestats_t>		stats_table_t;
 
 // index to queue table, offset to value within
 typedef std::pair<size_t, size_t>		queue_entry_t;
@@ -63,14 +63,14 @@ private:	// network state
 	Ethtool*		ethtool = nullptr;
 	size_t			qcount = 0;
 	queue_map_t		qmap;
-	stats_list_t		prev;
-	stats_list_t		delta;
+	stats_table_t		prev;
+	stats_table_t		delta;
 	queuestats_t		total;
 
 	std::vector<std::string> get_string_names();
 	void			build_queue_map(StringsetParser *parser, const Ethtool::stringset_t& names);
 
-	stats_list_t		get_stats();
+	stats_table_t		get_stats();
 	void			get_deltas();
 
 private:	// time handling
@@ -140,13 +140,13 @@ void EthQApp::build_queue_map(StringsetParser* parser, const Ethtool::stringset_
 //
 // return the latest (absolute) counters for the four values for each queue
 //
-stats_list_t EthQApp::get_stats()
+stats_table_t EthQApp::get_stats()
 {
-	stats_list_t results(qcount);
+	stats_table_t results(qcount);
 
 	auto raw = ethtool->stats();
 
-	for (const auto pair: qmap) {
+	for (const auto& pair: qmap) {
 		auto id = pair.first;
 		auto& entry = pair.second;
 		auto queue = entry.first;
@@ -164,7 +164,7 @@ stats_list_t EthQApp::get_stats()
 //
 void EthQApp::get_deltas()
 {
-	stats_list_t stats = get_stats();
+	stats_table_t stats = get_stats();
 
 	for (size_t j = 0; j < 4; ++j) {
 		total.counts[j] = 0;
