@@ -14,6 +14,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <array>
 #include <map>
 #include <regex>
 
@@ -32,54 +33,44 @@ public:
 private:
 	static parsermap_t parsers;
 
-public:
-	virtual bool match(const std::string& key, size_t value, size_t& queue, bool& rx, bool& bytes) = 0;
-
 protected:
 	void save(const std::string& driver);
 	void save(const driverlist_t& drivers);
 
 public:
-	static ptr_t find(const std::string& driver);
-
-};
-
-//
-// abstract base class for parsers that need to remember the
-// values seen in previous lines of input
-//
-class StatefulParser : public StringsetParser {
-
-protected:
-	size_t		queue = -1;
-	bool		rx = false;
-	bool		bytes = false;
-
-};
-
-//
-// abstract base classes for parsers that need a single
-// regular expression to match all three fields
-//
-class Stringset_RE_Parser : public StringsetParser {
-
-protected:
-	std::regex	re;
-	std::smatch	ma;
-	std::string	ms(size_t n);
+	StringsetParser(const driverlist_t& drivers);
+	virtual bool match(const std::string& key, size_t value, size_t& queue, bool& rx, bool& bytes) = 0;
 
 public:
-	Stringset_RE_Parser(const driverlist_t& drivers, const std::string& match);
+	static ptr_t find(const std::string& driver);
 };
 
 //
 // concrete class that knows how to extract the three fields
-// from groups in a regex so long as they appear in the order
-// (direction, queue number, metric type)
+// from groups in a regex
 //
-class RE_DNT_Parser : public Stringset_RE_Parser {
+// the `order` table specifies the order in which the three
+// fields (direction, queue number, metric type) appear as
+// groups within the regex
+//
+// NB: match on "direction" requires an exact match for "rx"
+//     match on "type" requires an exact match for "bytes"
+//
+class RegexParser : public StringsetParser {
 
 public:
-	RE_DNT_Parser(const driverlist_t& drivers, const std::string& match);
+	typedef std::array<int, 3> order_t;
+
+protected:
+	order_t		order;
+	std::regex      re;
+	std::smatch     ma;
+	std::string     ms(size_t n);
+
+public:
+	RegexParser(const driverlist_t& drivers,
+		    const std::string& match,
+		    const order_t& order = { 1, 2, 3});
+
 	virtual bool match(const std::string& key, size_t value, size_t& queue, bool& rx, bool& bytes);
 };

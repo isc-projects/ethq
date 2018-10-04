@@ -11,12 +11,12 @@
 
 #include "parser.h"
 
-static RE_DNT_Parser intel_generic(
+static RegexParser intel_generic(
 	{ "ixgbe", "igb" },
 	"^(rx|tx)_queue_(\\d+)_(bytes|packets)$"
 );
 
-static RE_DNT_Parser intel_i40e(
+static RegexParser intel_i40e(
 	{ "i40e" },
 	"^(rx|tx)-(\\d+)\\.\\1_(bytes|packets)$"
 );

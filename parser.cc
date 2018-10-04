@@ -14,14 +14,19 @@
 
 StringsetParser::parsermap_t StringsetParser::parsers;
 
-void StringsetParser::save(const std::string& name) {
-	parsers[name] = this;
+StringsetParser::StringsetParser(const driverlist_t& drivers)
+{
+	save(drivers);
 }
 
-void StringsetParser::save(const std::vector<std::string>& drivers) {
+void StringsetParser::save(const driverlist_t& drivers) {
 	for (const auto& driver: drivers) {
 		save(driver);
 	}
+}
+
+void StringsetParser::save(const std::string& name) {
+	parsers[name] = this;
 }
 
 StringsetParser::ptr_t StringsetParser::find(const std::string& driver) {
@@ -33,28 +38,27 @@ StringsetParser::ptr_t StringsetParser::find(const std::string& driver) {
 	}
 }
 
-std::string Stringset_RE_Parser::ms(size_t n) {
+RegexParser::RegexParser(
+	const driverlist_t& drivers,
+	const std::string& match,
+	const order_t& order
+) : StringsetParser(drivers)
+{
+	re.assign(match);
+	std::copy(order.cbegin(), order.cend(), this->order.begin());
+}
+
+std::string RegexParser::ms(size_t n) {
 	return std::ssub_match(ma[n]).str();
 }
 
-Stringset_RE_Parser::Stringset_RE_Parser(const driverlist_t& drivers, const std::string& match)
-{
-	save(drivers);
-	re.assign(match);
-};
-
-RE_DNT_Parser::RE_DNT_Parser(const driverlist_t& drivers, const std::string& match)
-	: Stringset_RE_Parser(drivers, match)
-{
-}
-
-bool RE_DNT_Parser::match(const std::string& key, size_t value, size_t& queue, bool& rx, bool& bytes)
+bool RegexParser::match(const std::string& key, size_t value, size_t& queue, bool& rx, bool& bytes)
 {
 	auto found = std::regex_match(key, ma, re);
 	if (found) {
-		rx = (ms(1) == "rx");
-		queue = std::stoi(ms(2));
-		bytes = (ms(3) == "bytes");
+		rx = (ms(order[0]) == "rx");
+		queue = std::stoi(ms(order[1]));
+		bytes = (ms(order[2]) == "bytes");
 	}
 	return found;
 }

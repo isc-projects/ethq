@@ -11,7 +11,7 @@
 
 #include "parser.h"
 
-class VMXNet3Parser : public StatefulParser {
+class VMXNet3Parser : public StringsetParser {
 
 private:
 	std::regex	re1;
@@ -22,10 +22,14 @@ private:
 		return std::ssub_match(ma[n]).str();
 	}
 
+private:
+	size_t		queue = 0;
+	bool		rx = false;
+
 public:
-	VMXNet3Parser()
+	VMXNet3Parser(const driverlist_t& drivers)
+		: StringsetParser(drivers)
 	{
-		save("vmxnet3");
 		re1.assign("^(Rx|Tx) Queue#$");
 		re2.assign("^\\s*ucast (pkts|bytes) (rx|tx)$");
 	}
@@ -42,14 +46,9 @@ public:
 		// check for data entry
 		bool found = std::regex_match(key, ma, re2);
 		if (found) {
-			this->bytes = (ms(1) == "bytes");
-		}
-
-		// copy state to caller
-		if (found) {
+			bytes = (ms(1) == "bytes");
 			queue = this->queue;
 			rx = this->rx;
-			bytes = this->bytes;
 		}
 
 		return found;
@@ -57,4 +56,6 @@ public:
 
 };
 
-static VMXNet3Parser vmxnet3;
+static VMXNet3Parser vmxnet3(
+	{ "vmxnet3" }
+);
