@@ -25,6 +25,7 @@ The code currently supports the following drivers:
 
 - Broadcom `bnx2x`
 - Intel `igb`, `ixgbe`, `i40e`
+- RealTek `r8169`
 - VMware `vmxnet3`
 
 To request support for additional NICs, please raise a github issue and
