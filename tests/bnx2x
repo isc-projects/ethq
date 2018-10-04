@@ -1,23 +1,22 @@
-NIC statistics:
-     [0]: rx_bytes: 209435494924
-     [0]: rx_ucast_packets: 194314190
-     [0]: rx_mcast_packets: 1941456
-     [0]: rx_bcast_packets: 1314686
+     [0]: rx_bytes: 209487403324
+     [0]: rx_ucast_packets: 194386668
+     [0]: rx_mcast_packets: 1977213
+     [0]: rx_bcast_packets: 1314918
      [0]: rx_discards: 0
      [0]: rx_phy_ip_err_discards: 0
      [0]: rx_skb_alloc_discard: 0
      [0]: rx_csum_offload_errors: 0
      [0]: tx_exhaustion_events: 0
-     [0]: tx_bytes: 58662747984
-     [0]: tx_ucast_packets: 156545475
+     [0]: tx_bytes: 58683687716
+     [0]: tx_ucast_packets: 156650762
      [0]: tx_mcast_packets: 0
      [0]: tx_bcast_packets: 0
-     [0]: tpa_aggregations: 11300365
-     [0]: tpa_aggregated_frames: 133484516
-     [0]: tpa_bytes: 202362439725
+     [0]: tpa_aggregations: 11302917
+     [0]: tpa_aggregated_frames: 133512833
+     [0]: tpa_bytes: 202404822780
      [0]: driver_filtered_tx_pkt: 0
-     [1]: rx_bytes: 207475678600
-     [1]: rx_ucast_packets: 170407037
+     [1]: rx_bytes: 207561754146
+     [1]: rx_ucast_packets: 170492982
      [1]: rx_mcast_packets: 90
      [1]: rx_bcast_packets: 1447
      [1]: rx_discards: 0
@@ -25,37 +24,121 @@ NIC statistics:
      [1]: rx_skb_alloc_discard: 0
      [1]: rx_csum_offload_errors: 0
      [1]: tx_exhaustion_events: 0
-     [1]: tx_bytes: 48381312756
-     [1]: tx_ucast_packets: 132306829
+     [1]: tx_bytes: 48398427765
+     [1]: tx_ucast_packets: 132407943
      [1]: tx_mcast_packets: 0
      [1]: tx_bcast_packets: 8249
-     [1]: tpa_aggregations: 11416575
-     [1]: tpa_aggregated_frames: 134172961
-     [1]: tpa_bytes: 203406066529
+     [1]: tpa_aggregations: 11421208
+     [1]: tpa_aggregated_frames: 134227250
+     [1]: tpa_bytes: 203487947080
      [1]: driver_filtered_tx_pkt: 0
-...
-     [7]: rx_bytes: 209722406252
-     [7]: rx_ucast_packets: 178026936
+     [2]: rx_bytes: 212140089057
+     [2]: rx_ucast_packets: 201407420
+     [2]: rx_mcast_packets: 1
+     [2]: rx_bcast_packets: 524
+     [2]: rx_discards: 0
+     [2]: rx_phy_ip_err_discards: 0
+     [2]: rx_skb_alloc_discard: 0
+     [2]: rx_csum_offload_errors: 0
+     [2]: tx_exhaustion_events: 0
+     [2]: tx_bytes: 71080622533
+     [2]: tx_ucast_packets: 183556192
+     [2]: tx_mcast_packets: 0
+     [2]: tx_bcast_packets: 0
+     [2]: tpa_aggregations: 11449751
+     [2]: tpa_aggregated_frames: 135160862
+     [2]: tpa_bytes: 204905584810
+     [2]: driver_filtered_tx_pkt: 0
+     [3]: rx_bytes: 216656736913
+     [3]: rx_ucast_packets: 205324415
+     [3]: rx_mcast_packets: 23
+     [3]: rx_bcast_packets: 10217
+     [3]: rx_discards: 0
+     [3]: rx_phy_ip_err_discards: 0
+     [3]: rx_skb_alloc_discard: 0
+     [3]: rx_csum_offload_errors: 0
+     [3]: tx_exhaustion_events: 0
+     [3]: tx_bytes: 51308357737
+     [3]: tx_ucast_packets: 136112258
+     [3]: tx_mcast_packets: 0
+     [3]: tx_bcast_packets: 0
+     [3]: tpa_aggregations: 11825182
+     [3]: tpa_aggregated_frames: 138209122
+     [3]: tpa_bytes: 209260584817
+     [3]: driver_filtered_tx_pkt: 0
+     [4]: rx_bytes: 209590722446
+     [4]: rx_ucast_packets: 192984335
+     [4]: rx_mcast_packets: 35
+     [4]: rx_bcast_packets: 13045
+     [4]: rx_discards: 0
+     [4]: rx_phy_ip_err_discards: 0
+     [4]: rx_skb_alloc_discard: 0
+     [4]: rx_csum_offload_errors: 0
+     [4]: tx_exhaustion_events: 0
+     [4]: tx_bytes: 54280967548
+     [4]: tx_ucast_packets: 146022916
+     [4]: tx_mcast_packets: 7
+     [4]: tx_bcast_packets: 0
+     [4]: tpa_aggregations: 11363112
+     [4]: tpa_aggregated_frames: 134029807
+     [4]: tpa_bytes: 203193652200
+     [4]: driver_filtered_tx_pkt: 0
+     [5]: rx_bytes: 227582912666
+     [5]: rx_ucast_packets: 253934780
+     [5]: rx_mcast_packets: 76
+     [5]: rx_bcast_packets: 136
+     [5]: rx_discards: 0
+     [5]: rx_phy_ip_err_discards: 0
+     [5]: rx_skb_alloc_discard: 0
+     [5]: rx_csum_offload_errors: 0
+     [5]: tx_exhaustion_events: 0
+     [5]: tx_bytes: 58078471224
+     [5]: tx_ucast_packets: 152287571
+     [5]: tx_mcast_packets: 5
+     [5]: tx_bcast_packets: 0
+     [5]: tpa_aggregations: 11762192
+     [5]: tpa_aggregated_frames: 137031734
+     [5]: tpa_bytes: 207580859167
+     [5]: driver_filtered_tx_pkt: 0
+     [6]: rx_bytes: 210804597840
+     [6]: rx_ucast_packets: 206503753
+     [6]: rx_mcast_packets: 0
+     [6]: rx_bcast_packets: 112231
+     [6]: rx_discards: 0
+     [6]: rx_phy_ip_err_discards: 0
+     [6]: rx_skb_alloc_discard: 0
+     [6]: rx_csum_offload_errors: 0
+     [6]: tx_exhaustion_events: 0
+     [6]: tx_bytes: 48621710603
+     [6]: tx_ucast_packets: 132087428
+     [6]: tx_mcast_packets: 0
+     [6]: tx_bcast_packets: 0
+     [6]: tpa_aggregations: 11346578
+     [6]: tpa_aggregated_frames: 133823738
+     [6]: tpa_bytes: 202868018893
+     [6]: driver_filtered_tx_pkt: 0
+     [7]: rx_bytes: 209770669380
+     [7]: rx_ucast_packets: 178090659
      [7]: rx_mcast_packets: 6
-     [7]: rx_bcast_packets: 12438
+     [7]: rx_bcast_packets: 12588
      [7]: rx_discards: 0
      [7]: rx_phy_ip_err_discards: 0
      [7]: rx_skb_alloc_discard: 0
      [7]: rx_csum_offload_errors: 0
      [7]: tx_exhaustion_events: 0
-     [7]: tx_bytes: 48100670130
-     [7]: tx_ucast_packets: 130875291
-     [7]: tx_mcast_packets: 307294
+     [7]: tx_bytes: 48114336428
+     [7]: tx_ucast_packets: 130962018
+     [7]: tx_mcast_packets: 309529
      [7]: tx_bcast_packets: 0
-     [7]: tpa_aggregations: 11429091
-     [7]: tpa_aggregated_frames: 135123025
-     [7]: tpa_bytes: 204849400879
+     [7]: tpa_aggregations: 11431679
+     [7]: tpa_aggregated_frames: 135152251
+     [7]: tpa_bytes: 204893159596
      [7]: driver_filtered_tx_pkt: 0
-     rx_bytes: 1703074084171
+     rx_bytes: 1703594885772
      rx_error_bytes: 0
-     rx_ucast_packets: 1602495992
-     rx_mcast_packets: 1941687
-     rx_bcast_packets: 1464424
+     rx_ucast_packets: 1603125012
+     rx_mcast_packets: 1977444
+     rx_bcast_packets: 1465106
      rx_crc_errors: 0
      rx_align_errors: 0
      rx_undersize_packets: 0
@@ -63,7 +146,7 @@ NIC statistics:
      rx_fragments: 0
      rx_jabbers: 0
      rx_discards: 0
-     rx_filtered_packets: 30617727
+     rx_filtered_packets: 30687561
      rx_mf_tag_discard: 0
      pfc_frames_received: 0
      pfc_frames_sent: 0
@@ -76,10 +159,10 @@ NIC statistics:
      rx_skb_alloc_discard: 0
      rx_csum_offload_errors: 0
      tx_exhaustion_events: 0
-     tx_bytes: 438421841538
+     tx_bytes: 438566581554
      tx_error_bytes: 0
-     tx_ucast_packets: 1169288643
-     tx_mcast_packets: 307306
+     tx_ucast_packets: 1170087088
+     tx_mcast_packets: 309541
      tx_bcast_packets: 8249
      tx_mac_errors: 2
      tx_carrier_errors: 0
@@ -89,17 +172,17 @@ NIC statistics:
      tx_excess_collisions: 0
      tx_late_collisions: 0
      tx_total_collisions: 0
-     tx_64_byte_packets: 449596
-     tx_65_to_127_byte_packets: 681941748
-     tx_128_to_255_byte_packets: 8373481
-     tx_256_to_511_byte_packets: 189868935
-     tx_512_to_1023_byte_packets: 147590525
-     tx_1024_to_1522_byte_packets: 138385195
+     tx_64_byte_packets: 450368
+     tx_65_to_127_byte_packets: 682645668
+     tx_128_to_255_byte_packets: 8388699
+     tx_256_to_511_byte_packets: 189886883
+     tx_512_to_1023_byte_packets: 147607729
+     tx_1024_to_1522_byte_packets: 138430710
      tx_1523_to_9022_byte_packets: 0
      tx_pause_frames: 0
-     tpa_aggregations: 91875347
-     tpa_aggregated_frames: 1080834721
-     tpa_bytes: 1638124710194
+     tpa_aggregations: 91902619
+     tpa_aggregated_frames: 1081147597
+     tpa_bytes: 1638594629343
      recoverable_errors: 0
      unrecoverable_errors: 0
      driver_filtered_tx_pkt: 0
