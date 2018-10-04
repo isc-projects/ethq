@@ -1,0 +1,14 @@
+NIC statistics:
+     tx_packets: 0
+     rx_packets: 0
+     tx_errors: 0
+     rx_errors: 0
+     rx_missed: 0
+     align_errors: 0
+     tx_single_collisions: 0
+     tx_multi_collisions: 0
+     unicast: 0
+     broadcast: 0
+     multicast: 0
+     tx_aborted: 0
+     tx_underrun: 0
