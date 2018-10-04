@@ -1,0 +1,222 @@
+     rx_crc_errors: 0
+     rx_alignment_symbol_errors: 0
+     rx_pause_frames: 0
+     rx_control_frames: 0
+     rx_in_range_errors: 0
+     rx_out_range_errors: 0
+     rx_frame_too_long: 0
+     rx_address_filtered: 5164994
+     rx_dropped_too_small: 10
+     rx_dropped_too_short: 5710
+     rx_dropped_header_too_small: 1096
+     rx_dropped_tcp_length: 603
+     rx_dropped_runt: 0
+     rxpp_fifo_overflow_drop: 0
+     rx_input_fifo_overflow_drop: 0
+     rx_ip_checksum_errs: 12655
+     rx_tcp_checksum_errs: 93915
+     rx_udp_checksum_errs: 8890
+     tx_pauseframes: 0
+     tx_controlframes: 0
+     rx_priority_pause_frames: 0
+     tx_priority_pauseframes: 0
+     pmem_fifo_overflow_drop: 0
+     jabber_events: 0
+     rx_drops_no_pbuf: 0
+     rx_drops_no_erx_descr: 0
+     rx_drops_no_tpre_descr: 0
+     rx_drops_too_many_frags: 0
+     forwarded_packets: 0
+     rx_drops_mtu: 0
+     dma_map_errors: 0
+     eth_red_drops: 0
+     rx_roce_bytes_lsd: 0
+     rx_roce_bytes_msd: 0
+     rx_roce_frames: 0
+     roce_drops_payload_len: 0
+     roce_drops_crc: 0
+     rxq0: rx_bytes: 2439792269
+     rxq0: rx_pkts: 6743082
+     rxq0: rx_vxlan_offload_pkts: 0
+     rxq0: rx_compl: 6743082
+     rxq0: rx_compl_err: 0
+     rxq0: rx_mcast_pkts: 0
+     rxq0: rx_post_fail: 0
+     rxq0: rx_drops_no_skbs: 0
+     rxq0: rx_drops_no_frags: 0
+     rxq1: rx_bytes: 2882162456
+     rxq1: rx_pkts: 6697989
+     rxq1: rx_vxlan_offload_pkts: 0
+     rxq1: rx_compl: 6697989
+     rxq1: rx_compl_err: 0
+     rxq1: rx_mcast_pkts: 0
+     rxq1: rx_post_fail: 0
+     rxq1: rx_drops_no_skbs: 0
+     rxq1: rx_drops_no_frags: 0
+     rxq2: rx_bytes: 2667781824
+     rxq2: rx_pkts: 6547278
+     rxq2: rx_vxlan_offload_pkts: 0
+     rxq2: rx_compl: 6547278
+     rxq2: rx_compl_err: 0
+     rxq2: rx_mcast_pkts: 0
+     rxq2: rx_post_fail: 0
+     rxq2: rx_drops_no_skbs: 0
+     rxq2: rx_drops_no_frags: 0
+     rxq3: rx_bytes: 2851384999
+     rxq3: rx_pkts: 6783756
+     rxq3: rx_vxlan_offload_pkts: 0
+     rxq3: rx_compl: 6783756
+     rxq3: rx_compl_err: 0
+     rxq3: rx_mcast_pkts: 0
+     rxq3: rx_post_fail: 0
+     rxq3: rx_drops_no_skbs: 0
+     rxq3: rx_drops_no_frags: 0
+     rxq4: rx_bytes: 4819001070
+     rxq4: rx_pkts: 14584601
+     rxq4: rx_vxlan_offload_pkts: 0
+     rxq4: rx_compl: 14584601
+     rxq4: rx_compl_err: 0
+     rxq4: rx_mcast_pkts: 0
+     rxq4: rx_post_fail: 0
+     rxq4: rx_drops_no_skbs: 0
+     rxq4: rx_drops_no_frags: 0
+     rxq5: rx_bytes: 2671333598
+     rxq5: rx_pkts: 6861110
+     rxq5: rx_vxlan_offload_pkts: 0
+     rxq5: rx_compl: 6861110
+     rxq5: rx_compl_err: 0
+     rxq5: rx_mcast_pkts: 0
+     rxq5: rx_post_fail: 0
+     rxq5: rx_drops_no_skbs: 0
+     rxq5: rx_drops_no_frags: 0
+     rxq6: rx_bytes: 2800767716
+     rxq6: rx_pkts: 7428055
+     rxq6: rx_vxlan_offload_pkts: 0
+     rxq6: rx_compl: 7428055
+     rxq6: rx_compl_err: 0
+     rxq6: rx_mcast_pkts: 0
+     rxq6: rx_post_fail: 0
+     rxq6: rx_drops_no_skbs: 0
+     rxq6: rx_drops_no_frags: 0
+     rxq7: rx_bytes: 2764715460
+     rxq7: rx_pkts: 7267267
+     rxq7: rx_vxlan_offload_pkts: 0
+     rxq7: rx_compl: 7267267
+     rxq7: rx_compl_err: 0
+     rxq7: rx_mcast_pkts: 0
+     rxq7: rx_post_fail: 0
+     rxq7: rx_drops_no_skbs: 0
+     rxq7: rx_drops_no_frags: 0
+     rxq8: rx_bytes: 837069219
+     rxq8: rx_pkts: 11437669
+     rxq8: rx_vxlan_offload_pkts: 0
+     rxq8: rx_compl: 11437669
+     rxq8: rx_compl_err: 93862
+     rxq8: rx_mcast_pkts: 1219229
+     rxq8: rx_post_fail: 0
+     rxq8: rx_drops_no_skbs: 0
+     rxq8: rx_drops_no_frags: 0
+     txq0: tx_compl: 7456829
+     txq0: tx_hdr_parse_err: 0
+     txq0: tx_dma_err: 0
+     txq0: tx_spoof_check_err: 0
+     txq0: tx_tso_err: 0
+     txq0: tx_qinq_err: 0
+     txq0: tx_internal_parity_err: 0
+     txq0: tx_bytes: 1481166547
+     txq0: tx_pkts: 7694961
+     txq0: tx_vxlan_offload_pkts: 0
+     txq0: tx_reqs: 7456829
+     txq0: tx_stops: 0
+     txq0: tx_drv_drops: 0
+     txq1: tx_compl: 7343651
+     txq1: tx_hdr_parse_err: 0
+     txq1: tx_dma_err: 0
+     txq1: tx_spoof_check_err: 0
+     txq1: tx_tso_err: 0
+     txq1: tx_qinq_err: 0
+     txq1: tx_internal_parity_err: 0
+     txq1: tx_bytes: 1537975832
+     txq1: tx_pkts: 7626886
+     txq1: tx_vxlan_offload_pkts: 0
+     txq1: tx_reqs: 7343651
+     txq1: tx_stops: 0
+     txq1: tx_drv_drops: 0
+     txq2: tx_compl: 7267281
+     txq2: tx_hdr_parse_err: 0
+     txq2: tx_dma_err: 0
+     txq2: tx_spoof_check_err: 0
+     txq2: tx_tso_err: 0
+     txq2: tx_qinq_err: 0
+     txq2: tx_internal_parity_err: 0
+     txq2: tx_bytes: 1492760836
+     txq2: tx_pkts: 7527778
+     txq2: tx_vxlan_offload_pkts: 0
+     txq2: tx_reqs: 7267281
+     txq2: tx_stops: 0
+     txq2: tx_drv_drops: 0
+     txq3: tx_compl: 7435127
+     txq3: tx_hdr_parse_err: 0
+     txq3: tx_dma_err: 0
+     txq3: tx_spoof_check_err: 0
+     txq3: tx_tso_err: 0
+     txq3: tx_qinq_err: 0
+     txq3: tx_internal_parity_err: 0
+     txq3: tx_bytes: 1503631982
+     txq3: tx_pkts: 7690089
+     txq3: tx_vxlan_offload_pkts: 0
+     txq3: tx_reqs: 7435127
+     txq3: tx_stops: 0
+     txq3: tx_drv_drops: 0
+     txq4: tx_compl: 14684227
+     txq4: tx_hdr_parse_err: 0
+     txq4: tx_dma_err: 0
+     txq4: tx_spoof_check_err: 0
+     txq4: tx_tso_err: 0
+     txq4: tx_qinq_err: 0
+     txq4: tx_internal_parity_err: 0
+     txq4: tx_bytes: 2214385049
+     txq4: tx_pkts: 14979301
+     txq4: tx_vxlan_offload_pkts: 0
+     txq4: tx_reqs: 14684227
+     txq4: tx_stops: 0
+     txq4: tx_drv_drops: 0
+     txq5: tx_compl: 7754245
+     txq5: tx_hdr_parse_err: 0
+     txq5: tx_dma_err: 0
+     txq5: tx_spoof_check_err: 0
+     txq5: tx_tso_err: 0
+     txq5: tx_qinq_err: 0
+     txq5: tx_internal_parity_err: 0
+     txq5: tx_bytes: 1558800218
+     txq5: tx_pkts: 8025418
+     txq5: tx_vxlan_offload_pkts: 0
+     txq5: tx_reqs: 7754245
+     txq5: tx_stops: 0
+     txq5: tx_drv_drops: 0
+     txq6: tx_compl: 8531252
+     txq6: tx_hdr_parse_err: 0
+     txq6: tx_dma_err: 0
+     txq6: tx_spoof_check_err: 0
+     txq6: tx_tso_err: 0
+     txq6: tx_qinq_err: 0
+     txq6: tx_internal_parity_err: 0
+     txq6: tx_bytes: 1604539166
+     txq6: tx_pkts: 8783170
+     txq6: tx_vxlan_offload_pkts: 0
+     txq6: tx_reqs: 8531252
+     txq6: tx_stops: 0
+     txq6: tx_drv_drops: 0
+     txq7: tx_compl: 8695318
+     txq7: tx_hdr_parse_err: 0
+     txq7: tx_dma_err: 0
+     txq7: tx_spoof_check_err: 0
+     txq7: tx_tso_err: 0
+     txq7: tx_qinq_err: 0
+     txq7: tx_internal_parity_err: 0
+     txq7: tx_bytes: 1616405368
+     txq7: tx_pkts: 8958932
+     txq7: tx_vxlan_offload_pkts: 0
+     txq7: tx_reqs: 8695318
+     txq7: tx_stops: 0
+     txq7: tx_drv_drops: 0

@@ -21,9 +21,10 @@ NIC Support
 The format of the names of the statistics values from a NIC is highly
 driver specific.
 
-The code currently supports the following drivers:
+The code currently supports the output from the following NIC drivers:
 
 - Broadcom `bnx2x`
+- Emulex `be2net`
 - Intel `igb`, `ixgbe`, `i40e`
 - RealTek `r8169`
 - VMware `vmxnet3`
