@@ -4,7 +4,7 @@ LDFLAGS		=
 
 LIBS_CURSES	= -lncurses
 
-TARGETS		= ethq
+TARGETS		= ethq ethq_test
 
 COMMON_OBJS	= timer.o util.o
 DRIVER_OBJS	= drv_intel.o drv_bcm.o drv_vmxnet3.o
@@ -13,6 +13,9 @@ all:		$(TARGETS)
 
 ethq:		ethq.o ethtool++.o parser.o util.o $(DRIVER_OBJS)
 	$(CXX) -o $@ $^ $(CXXFLAGS) $(LDFLAGS) $(LIBS_CURSES)
+
+ethq_test:	ethq_test.o parser.o util.o $(DRIVER_OBJS)
+	$(CXX) -o $@ $^ $(CXXFLAGS) $(LDFLAGS)
 
 clean:
 	$(RM) $(TARGETS) *.o

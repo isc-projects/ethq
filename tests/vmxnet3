@@ -1,0 +1,72 @@
+NIC statistics:
+     Tx Queue#: 0
+       TSO pkts tx: 161
+       TSO bytes tx: 353558
+       ucast pkts tx: 54123
+       ucast bytes tx: 9333023
+       mcast pkts tx: 36
+       mcast bytes tx: 4622
+       bcast pkts tx: 3
+       bcast bytes tx: 432
+       pkts tx err: 0
+       pkts tx discard: 0
+       drv dropped tx total: 0
+          too many frags: 0
+          giant hdr: 0
+          hdr err: 0
+          tso: 0
+       ring full: 0
+       pkts linearized: 0
+       hdr cloned: 0
+       giant hdr: 0
+     Tx Queue#: 1
+       TSO pkts tx: 620
+       TSO bytes tx: 1240681
+       ucast pkts tx: 64809
+       ucast bytes tx: 9359541
+       mcast pkts tx: 6
+       mcast bytes tx: 528
+       bcast pkts tx: 0
+       bcast bytes tx: 0
+       pkts tx err: 0
+       pkts tx discard: 0
+       drv dropped tx total: 0
+          too many frags: 0
+          giant hdr: 0
+          hdr err: 0
+          tso: 0
+       ring full: 0
+       pkts linearized: 0
+       hdr cloned: 0
+       giant hdr: 0
+     Rx Queue#: 0
+       LRO pkts rx: 5283
+       LRO byte rx: 27010018
+       ucast pkts rx: 40863
+       ucast bytes rx: 75776304
+       mcast pkts rx: 112048
+       mcast bytes rx: 38879727
+       bcast pkts rx: 79384
+       bcast bytes rx: 9352174
+       pkts rx OOB: 0
+       pkts rx err: 0
+       drv dropped rx total: 0
+          err: 0
+          fcs: 0
+       rx buf alloc fail: 0
+     Rx Queue#: 1
+       LRO pkts rx: 604
+       LRO byte rx: 2527622
+       ucast pkts rx: 143523
+       ucast bytes rx: 23059888
+       mcast pkts rx: 82558
+       mcast bytes rx: 22900279
+       bcast pkts rx: 17327
+       bcast bytes rx: 4360015
+       pkts rx OOB: 0
+       pkts rx err: 0
+       drv dropped rx total: 0
+          err: 0
+          fcs: 0
+       rx buf alloc fail: 0
+     tx timeout count: 0
