@@ -7,7 +7,8 @@ LIBS_CURSES	= -lncurses
 TARGETS		= ethq ethq_test
 
 COMMON_OBJS	= timer.o util.o
-DRIVER_OBJS	= drv_intel.o drv_bcm.o drv_vmware.o drv_realtek.o drv_emulex.o
+DRIVER_OBJS	= drv_intel.o drv_bcm.o drv_vmware.o drv_realtek.o drv_emulex.o \
+		  drv_mellanox.o
 
 all:		$(TARGETS)
 
