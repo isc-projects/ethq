@@ -6,13 +6,12 @@ LIBS_CURSES	= -lncurses
 
 TARGETS		= ethq ethq_test
 
-COMMON_OBJS	= timer.o util.o
 DRIVER_OBJS	= drv_intel.o drv_bcm.o drv_vmware.o drv_realtek.o drv_emulex.o \
 		  drv_mellanox.o
 
 all:		$(TARGETS)
 
-ethq:		ethq.o ethtool++.o parser.o util.o $(DRIVER_OBJS)
+ethq:		ethq.o ethtool++.o interface.o parser.o util.o $(DRIVER_OBJS)
 	$(CXX) -o $@ $^ $(CXXFLAGS) $(LDFLAGS) $(LIBS_CURSES)
 
 ethq_test:	ethq_test.o parser.o util.o $(DRIVER_OBJS)

@@ -23,32 +23,8 @@
 #include <poll.h>
 #include <ncurses.h>
 
-#include "ethtool++.h"
-#include "parser.h"
+#include "interface.h"
 #include "util.h"
-
-//
-// the four combinations of rx/tx and packets/bytes are stored
-// in this union, so that they can either be addressed by index
-// or by name
-//
-typedef union {
-	uint64_t		counts[4];
-	struct {
-		uint64_t	tx_packets;
-		uint64_t	rx_packets;
-		uint64_t	tx_bytes;
-		uint64_t	rx_bytes;
-	} q;
-} queuestats_t;
-
-typedef std::vector<queuestats_t>		stats_table_t;
-
-// index to queue table, offset to value within
-typedef std::pair<size_t, size_t>		queue_entry_t;
-
-// string entry number -> queue_entry_t
-typedef std::map<size_t, queue_entry_t>		queue_map_t;
 
 //
 // main application wrapper class
@@ -56,22 +32,10 @@ typedef std::map<size_t, queue_entry_t>		queue_map_t;
 class EthQApp {
 
 private:	// command line parameters
-	std::string		ifname;
 	bool			winmode = true;
 
 private:	// network state
-	Ethtool*		ethtool = nullptr;
-	size_t			qcount = 0;
-	queue_map_t		qmap;
-	stats_table_t		prev;
-	stats_table_t		delta;
-	queuestats_t		total;
-
-	std::vector<std::string> get_string_names();
-	void			build_queue_map(StringsetParser *parser, const Ethtool::stringset_t& names);
-
-	stats_table_t		get_stats();
-	void			get_deltas();
+	Interface*		iface = nullptr;
 
 private:	// time handling
 	timespec		now;
@@ -98,88 +62,6 @@ public:
 
 	void			run();
 };
-
-void EthQApp::build_queue_map(StringsetParser* parser, const Ethtool::stringset_t& names)
-{
-	// some drivers (e.g. vmnet3) store the queue number in a key-value pair
-	auto raw = ethtool->stats();
-
-	size_t queue = -1;
-	auto rx = false;
-	auto bytes = false;
-
-	//
-	// iterate through all of the stats looking for names that
-	// match the recognised strings
-	//
-	for (size_t i = 0, n = names.size(); i < n; ++i) {
-
-		//
-		// try to map the stringset entry to a queue
-		//
-		bool found = parser->match(names[i], raw[i], queue, rx, bytes);
-
-		//
-		// remember the individual rows that make up the four stats
-		// values for each NIC queue
-		//
-		if (found) {
-
-			// calculate offset into the four entry structure
-			auto offset = static_cast<size_t>(rx) + 2 * static_cast<size_t>(bytes);
-
-			// and populate it
-			qmap[i] = queue_entry_t { queue, offset };
-
-			// count the number of queues
-			qcount = std::max(queue + 1, qcount);
-		}
-	}
-}
-
-//
-// return the latest (absolute) counters for the four values for each queue
-//
-stats_table_t EthQApp::get_stats()
-{
-	stats_table_t results(qcount);
-
-	auto raw = ethtool->stats();
-
-	for (const auto& pair: qmap) {
-		auto id = pair.first;
-		auto& entry = pair.second;
-		auto queue = entry.first;
-		auto offset = entry.second;
-
-		results[queue].counts[offset] = raw[id];
-	}
-
-	return results;
-}
-
-//
-// get the latest counters, calculate difference from the previous set,
-// and then store the latest values for next time around
-//
-void EthQApp::get_deltas()
-{
-	stats_table_t stats = get_stats();
-
-	for (size_t j = 0; j < 4; ++j) {
-		total.counts[j] = 0;
-	}
-
-	for (size_t i = 0; i < qcount; ++i) {
-		for (size_t j = 0; j < 4; ++j) {
-			int64_t d = stats[i].counts[j] - prev[i].counts[j];
-			delta[i].counts[j] = d;
-			total.counts[j] += d;
-		}
-	}
-
-	std::swap(stats, prev);
-}
 
 static void usage(int status = EXIT_SUCCESS)
 {
@@ -213,7 +95,7 @@ void EthQApp::winmode_redraw()
 
 	// show driver and interface name
 	wmove(w, y, 0);
-	wprintw(w, "%s:%s", ethtool->driver().c_str(), ifname.c_str());
+	wprintw(w, "%s", iface->info().c_str());
 
 	// show current time
 	wmove(w, y, 47);
@@ -229,12 +111,11 @@ void EthQApp::winmode_redraw()
 	wprintw(w, fmt_sssssss, bar, bar, bar, bar, bar, bar, bar);
 	nextline();
 
-	for (size_t i = 0; i < qcount; ++i) {
+	for (size_t i = 0, n = iface->queue_count(); i < n; ++i) {
 		// skip quiescent queues
-		auto& p = prev[i].counts;
-		if (p[0] == 0 && p[1] == 0) continue;
+		if (!iface->queue_active(i)) continue;
 
-		auto& q = delta[i].counts;
+		auto& q = iface->queue_stats(i).counts;
 		wprintw(w, fmt_nnnnnff, i, q[0], q[1], q[2], q[3], mbps(q[2]), mbps(q[3]));
 		nextline();
 	}
@@ -242,7 +123,7 @@ void EthQApp::winmode_redraw()
 	wprintw(w, fmt_sssssss, bar, bar, bar, bar, bar, bar, bar);
 	nextline();
 
-	auto& q = total.counts;
+	auto& q = iface->total_stats().counts;
 	wprintw(w, fmt_snnnnff, "Total", q[0], q[1], q[2], q[3], mbps(q[2]), mbps(q[3]));
 
 	wrefresh(w);
@@ -255,16 +136,15 @@ void EthQApp::textmode_init()
 
 void EthQApp::textmode_redraw()
 {
-	for (size_t i = 0; i < qcount; ++i) {
+	for (size_t i = 0, n = iface->queue_count(); i < n; ++i) {
 		// skip quiescent queues
-		auto& p = prev[i].counts;
-		if (p[0] == 0 && p[1] == 0) continue;
+		if (!iface->queue_active(i)) continue;
 
-		auto& q = delta[i].counts;
+		auto& q = iface->queue_stats(i).counts;
 		printf(fmt_nnnnnff, i, q[0], q[1], q[2], q[3], mbps(q[2]), mbps(q[3]));
 	}
 
-	auto& q = total.counts;
+	auto& q = iface->total_stats().counts;
 	printf(fmt_snnnnff, "T", q[0], q[1], q[2], q[3], mbps(q[2]), mbps(q[3]));
 }
 
@@ -309,7 +189,7 @@ void EthQApp::winmode_init()
 	keypad(stdscr, TRUE);
 	curs_set(0);
 
-	sub = newwin(qcount + 8, 67, 1, 1);
+	sub = newwin(iface->queue_count() + 8, 67, 1, 1);
 }
 
 void EthQApp::winmode_exit()
@@ -319,13 +199,12 @@ void EthQApp::winmode_exit()
 
 void EthQApp::run()
 {
-	prev = get_stats();
 	time_get();
 
 	while (true) {
 		if (winmode && winmode_should_exit()) break;
 		time_wait();
-		get_deltas();
+		iface->refresh();
 
 		if (winmode) {
 			winmode_redraw();
@@ -335,7 +214,7 @@ void EthQApp::run()
 	}
 }
 
-EthQApp::EthQApp(int argc, char *argv[]) : qcount(0)
+EthQApp::EthQApp(int argc, char *argv[])
 {
 	int opt;
 
@@ -355,22 +234,8 @@ EthQApp::EthQApp(int argc, char *argv[]) : qcount(0)
 		usage(EXIT_FAILURE);
 	}
 
-	// connect to the ethtool API
-	ifname.assign(argv[optind]);
-	ethtool = new Ethtool(ifname);
-
-	// find the write code to parse this class of NIC
-	auto parser = StringsetParser::find(ethtool->driver());
-	if (!parser) {
-		throw std::runtime_error("Unsupported NIC driver");
-	}
-
-	// parse the list of stats strings for this driver
-	build_queue_map(parser, ethtool->stringset(ETH_SS_STATS));
-	if (qcount == 0) {
-		throw std::runtime_error("couldn't parse NIC stats");
-	}
-	delta.reserve(qcount);
+	// connect to the interface
+	iface = new Interface(argv[optind]);
 
 	// set up display mode
 	if (winmode) {
@@ -386,7 +251,7 @@ EthQApp::~EthQApp()
 		winmode_exit();
 	}
 
-	delete ethtool;
+	delete iface;
 }
 
 int main(int argc, char *argv[])
