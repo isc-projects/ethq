@@ -192,14 +192,18 @@ static void usage(int status = EXIT_SUCCESS)
 
 const auto bar = "------------";
 
-const auto fmt_sssss = "%5.5s %12s %12s %12s %12s\n";
-const auto fmt_nnnnn = "%5ld %12ld %12ld %12ld %12ld\n";
-const auto fmt_snnnn = "%5.5s %12ld %12ld %12ld %12ld\n";
-const auto fmt_sssff = "%5.5s %12s %12s %12.3f %12.3f\n";
+const auto fmt_sssssss = "%5.5s %8.8s %8.8s %10.10s %10.10s %10.10s %10.10s\n";
+const auto fmt_nnnnnff = "%5ld %8ld %8ld %10ld %10ld %10.3f %10.3f\n";
+const auto fmt_snnnnff = "%5.5s %8ld %8ld %10ld %10ld %10.3f %10.3f\n";
+const auto fmt_sssff = "%5.5s %8.8s %8.8s %10.3f %10.3f\n";
+
+static double mbps(uint64_t n)
+{
+	return (n * 8) / 1e6;
+};
 
 void EthQApp::winmode_redraw()
 {
-
 	int y = 0;
 	auto w = sub;
 
@@ -212,17 +216,17 @@ void EthQApp::winmode_redraw()
 	wprintw(w, "%s:%s", ethtool->driver().c_str(), ifname.c_str());
 
 	// show current time
-	wmove(w, y, 37);
+	wmove(w, y, 47);
 	wprintw(w, " %s", timebuf);
 
 	// skip line
 	nextline();
 	nextline();
 
-	wprintw(w, fmt_sssss, "Queue", "TX packets", "RX packets", "TX bytes", "RX bytes");
+	wprintw(w, fmt_sssssss, "Queue", "TX pkts", "RX pkts", "TX bytes", "RX bytes", "TX Mbps", "RX Mbps");
 	nextline();
 
-	wprintw(w, fmt_sssss, bar, bar, bar, bar, bar);
+	wprintw(w, fmt_sssssss, bar, bar, bar, bar, bar, bar, bar);
 	nextline();
 
 	for (size_t i = 0; i < qcount; ++i) {
@@ -231,25 +235,22 @@ void EthQApp::winmode_redraw()
 		if (p[0] == 0 && p[1] == 0) continue;
 
 		auto& q = delta[i].counts;
-		wprintw(w, fmt_nnnnn, i, q[0], q[1], q[2], q[3]);
+		wprintw(w, fmt_nnnnnff, i, q[0], q[1], q[2], q[3], mbps(q[2]), mbps(q[3]));
 		nextline();
 	}
 
-	wprintw(w, fmt_sssss, bar, bar, bar, bar, bar);
+	wprintw(w, fmt_sssssss, bar, bar, bar, bar, bar, bar, bar);
 	nextline();
 
 	auto& q = total.counts;
-	wprintw(w, fmt_snnnn, "Total", q[0], q[1], q[2], q[3]);
-	nextline();
-
-	wprintw(w, fmt_sssff, "Mbps", "", "", 8.0 * q[2] / 1e6, 8.0 * q[3] / 1e6);
+	wprintw(w, fmt_snnnnff, "Total", q[0], q[1], q[2], q[3], mbps(q[2]), mbps(q[3]));
 
 	wrefresh(w);
 }
 
 void EthQApp::textmode_init()
 {
-	printf(fmt_sssss, "q", "txp", "rxp", "txb", "rxb");
+	printf(fmt_sssssss, "q", "txp", "rxp", "txb", "rxb", "txmbps", "rxmbps");
 }
 
 void EthQApp::textmode_redraw()
@@ -260,11 +261,11 @@ void EthQApp::textmode_redraw()
 		if (p[0] == 0 && p[1] == 0) continue;
 
 		auto& q = delta[i].counts;
-		printf(fmt_nnnnn, i, q[0], q[1], q[2], q[3]);
+		printf(fmt_nnnnnff, i, q[0], q[1], q[2], q[3], mbps(q[2]), mbps(q[3]));
 	}
 
 	auto& q = total.counts;
-	printf(fmt_snnnn, "T", q[0], q[1], q[2], q[3]);
+	printf(fmt_snnnnff, "T", q[0], q[1], q[2], q[3], mbps(q[2]), mbps(q[3]));
 }
 
 void EthQApp::time_get()
@@ -308,7 +309,7 @@ void EthQApp::winmode_init()
 	keypad(stdscr, TRUE);
 	curs_set(0);
 
-	sub = newwin(qcount + 8, 58, 1, 1);
+	sub = newwin(qcount + 8, 67, 1, 1);
 }
 
 void EthQApp::winmode_exit()
