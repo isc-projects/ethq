@@ -50,7 +50,6 @@ private:
 
 	ifstats_t			tstats;
 	std::vector<ifstats_t>		qstats;
-	std::vector<bool>		qactive;
 	queue_map_t			qmap;
 
 private:
@@ -66,7 +65,6 @@ public:
 	void				refresh();
 
 	size_t				queue_count() const;
-	bool				queue_active(size_t n) const;
 	const ifstats_t&		queue_stats(size_t n) const;
 	const ifstats_t&		total_stats() const;
 };

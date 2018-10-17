@@ -52,11 +52,6 @@ void Interface::refresh()
 	tstats.counts[2] = 0;
 	tstats.counts[3] = 0;
 
-	// reset active queue list
-	for (size_t i = 0, n = qstats.size(); i < n; ++i) {
-		qactive[i] = false;
-	}
-
 	for (const auto& pair: qmap) {
 
 		auto index = pair.first;
@@ -71,11 +66,6 @@ void Interface::refresh()
 		uint64_t delta = (current > prev) ? (current - prev) : 0;
 		qstats[queue].counts[offset] = delta;
 		tstats.counts[offset] += delta;
-
-		// tag active queues
-		if (delta) {
-			qactive[queue] = true;
-		}
 	}
 
 	std::swap(stats, state);
@@ -84,11 +74,6 @@ void Interface::refresh()
 size_t Interface::queue_count() const
 {
 	return qstats.size();
-}
-
-bool Interface::queue_active(size_t n) const
-{
-	return qactive[n];
 }
 
 const Interface::ifstats_t& Interface::queue_stats(size_t n) const
@@ -127,7 +112,7 @@ void Interface::build_queue_map(StringsetParser* parser)
 		// remember the individual rows that make up the four stats
 		// values for each NIC queue
 		//
-		if (found) {
+		if (found && (state[i] > 0)) {	// ignore zero-counters
 
 			// calculate offset into the four entry structure
 			auto offset = static_cast<size_t>(rx) + 2 * static_cast<size_t>(bytes);
@@ -141,5 +126,4 @@ void Interface::build_queue_map(StringsetParser* parser)
 	}
 
 	qstats.resize(qcount);
-	qactive.resize(qcount);
 }

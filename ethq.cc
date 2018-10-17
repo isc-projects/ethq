@@ -112,9 +112,6 @@ void EthQApp::winmode_redraw()
 	nextline();
 
 	for (size_t i = 0, n = iface->queue_count(); i < n; ++i) {
-		// skip quiescent queues
-		if (!iface->queue_active(i)) continue;
-
 		auto& q = iface->queue_stats(i).counts;
 		wprintw(w, fmt_nnnnnff, i, q[0], q[1], q[2], q[3], mbps(q[2]), mbps(q[3]));
 		nextline();
@@ -137,9 +134,6 @@ void EthQApp::textmode_init()
 void EthQApp::textmode_redraw()
 {
 	for (size_t i = 0, n = iface->queue_count(); i < n; ++i) {
-		// skip quiescent queues
-		if (!iface->queue_active(i)) continue;
-
 		auto& q = iface->queue_stats(i).counts;
 		printf(fmt_nnnnnff, i, q[0], q[1], q[2], q[3], mbps(q[2]), mbps(q[3]));
 	}
