@@ -10,6 +10,8 @@
  */
 
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 #include <stdexcept>
 #include <cstdlib>
 #include <ctime>
@@ -72,20 +74,74 @@ static void usage(int status = EXIT_SUCCESS)
 	exit(status);
 }
 
-const auto bar = "------------";
+static std::array<size_t, 7> cols = { 5, 8, 8, 10, 10, 10, 10 };
 
-const auto fmt_sssssss = "%5.5s %8.8s %8.8s %10.10s %10.10s %10.10s %10.10s\n";
-const auto fmt_nnnnnff = "%5ld %8ld %8ld %10ld %10ld %10.3f %10.3f\n";
-const auto fmt_snnnnff = "%5.5s %8ld %8ld %10ld %10ld %10.3f %10.3f\n";
-const auto fmt_sssff = "%5.5s %8.8s %8.8s %10.3f %10.3f\n";
-
-static double mbps(uint64_t n)
+static std::string out_bars()
 {
-	return (n * 8) / 1e6;
-};
+	using namespace std;
+
+	ostringstream out;
+	for (size_t n = 0; n < cols.size(); ++n) {
+		for (size_t i = 0; i < cols[n]; ++i) {
+			out << "-";
+		}
+		if (n != cols.size() - 1) {
+			out << " ";
+		}
+	}
+
+	return out.str();
+}
+
+static std::string out_hdr(const std::array<std::string, 7>& hdrs)
+{
+	using namespace std;
+
+	ostringstream out;
+	for (size_t n = 0; n < 7; ++n) {
+		out << setw(cols[n]) << hdrs[n];
+		if (n != cols.size() - 1) {
+			out << " ";
+		}
+	}
+
+	return out.str();
+}
+
+static std::string out_data(const std::string& label, const Interface::ifstats_t& stats)
+{
+	using namespace std;
+
+	ostringstream out;
+	out << setw(cols[0]) << label << " ";
+
+	auto& q = stats.counts;
+	for (size_t n = 1; n < 5; ++n) {
+		out << setw(cols[n]) << q[n - 1].to_string() << " ";
+	}
+
+	for (size_t n = 5; n < 7; ++n) {
+		out << setw(cols[n]);
+		const auto& bps = q[n - 3];
+		if (bps) {
+			auto mbps = static_cast<uint64_t>(bps) * 8 / 1e6;
+			out << fixed << setprecision(3) << mbps;
+		} else {
+			out << "-";
+		}
+		if (n != cols.size() - 1) {
+			out << " ";
+		}
+	}
+
+	return out.str();
+}
 
 void EthQApp::winmode_redraw()
 {
+	static auto header = out_hdr({ "Queue", "TX pkts", "RX pkts", "TX bytes", "RX bytes", "TX Mbps", "RX Mbps" });
+	static auto bars = out_bars();
+
 	int y = 0;
 	auto w = sub;
 
@@ -95,51 +151,49 @@ void EthQApp::winmode_redraw()
 
 	// show driver and interface name
 	wmove(w, y, 0);
-	wprintw(w, "%s", iface->info().c_str());
+	waddstr(w, iface->info().c_str());
 
-	// show current time
+	// show current time and skip a line
 	wmove(w, y, 47);
-	wprintw(w, " %s", timebuf);
+	waddch(w, ' ');
+	waddstr(w, timebuf);
+	nextline(); nextline();
 
-	// skip line
-	nextline();
-	nextline();
+	// show header and bars
+	waddstr(w, header.c_str()); nextline();
+	waddstr(w, bars.c_str()); nextline();
 
-	wprintw(w, fmt_sssssss, "Queue", "TX pkts", "RX pkts", "TX bytes", "RX bytes", "TX Mbps", "RX Mbps");
-	nextline();
-
-	wprintw(w, fmt_sssssss, bar, bar, bar, bar, bar, bar, bar);
-	nextline();
-
+	// show queue data
 	for (size_t i = 0, n = iface->queue_count(); i < n; ++i) {
-		auto& q = iface->queue_stats(i).counts;
-		wprintw(w, fmt_nnnnnff, i, q[0], q[1], q[2], q[3], mbps(q[2]), mbps(q[3]));
-		nextline();
+		const auto& out = out_data(std::to_string(i), iface->queue_stats(i));
+		waddstr(w, out.c_str()); nextline();
 	}
 
-	wprintw(w, fmt_sssssss, bar, bar, bar, bar, bar, bar, bar);
-	nextline();
+	// show bars
+	waddstr(w, bars.c_str()); nextline();
 
-	auto& q = iface->total_stats().counts;
-	wprintw(w, fmt_snnnnff, "Total", q[0], q[1], q[2], q[3], mbps(q[2]), mbps(q[3]));
+	// show totals
+	const auto& out = out_data("Total", iface->total_stats());
+	waddstr(w, out.c_str());
 
 	wrefresh(w);
 }
 
 void EthQApp::textmode_init()
 {
-	printf(fmt_sssssss, "q", "txp", "rxp", "txb", "rxb", "txmbps", "rxmbps");
+	static auto header = out_hdr({ "q", "txp", "rxp", "txb", "rxb", "txmbps", "rxmbps" });
+	puts(header.c_str());
 }
 
 void EthQApp::textmode_redraw()
 {
 	for (size_t i = 0, n = iface->queue_count(); i < n; ++i) {
-		auto& q = iface->queue_stats(i).counts;
-		printf(fmt_nnnnnff, i, q[0], q[1], q[2], q[3], mbps(q[2]), mbps(q[3]));
+		auto out = out_data(std::to_string(i), iface->queue_stats(i));
+		puts(out.c_str());
 	}
 
-	auto& q = iface->total_stats().counts;
-	printf(fmt_snnnnff, "T", q[0], q[1], q[2], q[3], mbps(q[2]), mbps(q[3]));
+	auto out = out_data("Total", iface->total_stats());
+	puts(out.c_str());
 }
 
 void EthQApp::time_get()

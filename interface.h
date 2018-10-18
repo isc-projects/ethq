@@ -17,6 +17,7 @@
 
 #include "ethtool++.h"
 #include "parser.h"
+#include "optval.h"
 
 class Interface {
 
@@ -26,14 +27,8 @@ public:
 	// in this union, so that they can either be addressed by index
 	// or by name
 	//
-	typedef union {
-		uint64_t		counts[4];
-		struct {
-			uint64_t	tx_packets;
-			uint64_t	rx_packets;
-			uint64_t	tx_bytes;
-			uint64_t	rx_bytes;
-		} q;
+	typedef struct {
+		OptVal			counts[4];
 	} ifstats_t;
 
 private:

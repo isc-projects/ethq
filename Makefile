@@ -24,4 +24,5 @@ ethq.o:		ethtool++.h util.h parser.h
 parser.o:	parser.h
 ethtool++.o:	ethtool++.h util.h
 util.o:		util.h
+interface.o:	interface.h optval.h
 $(DRIVER_OBJS):	parser.h
