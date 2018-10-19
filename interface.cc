@@ -47,10 +47,10 @@ void Interface::refresh()
 	auto stats = ethtool->stats();
 
 	// reset totals
-	tstats.counts[0] = 0;
-	tstats.counts[1] = 0;
-	tstats.counts[2] = 0;
-	tstats.counts[3] = 0;
+	tstats.counts[0].reset();
+	tstats.counts[1].reset();
+	tstats.counts[2].reset();
+	tstats.counts[3].reset();
 
 	for (const auto& pair: qmap) {
 
