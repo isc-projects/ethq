@@ -6,8 +6,8 @@ LIBS_CURSES	= -lncurses
 
 TARGETS		= ethq ethq_test
 
-DRIVER_OBJS	= drv_intel.o drv_bcm.o drv_vmware.o drv_realtek.o drv_emulex.o \
-		  drv_mellanox.o
+DRIVER_OBJS	= drv_intel.o drv_bcm.o drv_vmware.o drv_realtek.o \
+		  drv_emulex.o drv_mellanox.o
 
 all:		$(TARGETS)
 
@@ -20,9 +20,11 @@ ethq_test:	ethq_test.o parser.o util.o $(DRIVER_OBJS)
 clean:
 	$(RM) $(TARGETS) *.o
 
-ethq.o:		ethtool++.h util.h parser.h
+ethq.o:		interface.h util.h
+ethq_test.o:	parser.h util.h
 parser.o:	parser.h
 ethtool++.o:	ethtool++.h util.h
+interface.o:	interface.h
+interface.h:	parser.h optval.h optval.h
 util.o:		util.h
-interface.o:	interface.h optval.h
 $(DRIVER_OBJS):	parser.h
