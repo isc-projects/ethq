@@ -32,12 +32,12 @@ private:	// command line parameters
 	bool			winmode = true;
 
 private:	// network state
-	Interface*		iface = nullptr;
+	std::vector<std::shared_ptr<Interface>>	ifaces;
 
 private:	// time handling
 	timespec		now;
 	clockid_t		clock = CLOCK_REALTIME;
-	char			timebuf[26];
+	char			timebuf[9];
 
 	void			time_get();
 	void			time_wait();
@@ -62,7 +62,7 @@ static void usage(int status = EXIT_SUCCESS)
 {
 	using namespace std;
 
-	cerr << "usage: ethq [-t] <interface>" << endl;
+	cerr << "usage: ethq [-t] <interface> [interface ...]" << endl;
 
 	exit(status);
 }
@@ -80,7 +80,6 @@ static std::string out_hdr(const std::array<std::string, cols.size()>& hdrs)
 			out << " ";
 		}
 	}
-	out << " \n";
 
 	return out.str();
 }
@@ -109,7 +108,6 @@ static std::string out_data(const std::string& label, const Interface::ifstats_t
 			out << " ";
 		}
 	}
-	out << "\n";
 
 	return out.str();
 }
@@ -117,33 +115,45 @@ static std::string out_data(const std::string& label, const Interface::ifstats_t
 void EthQApp::winmode_redraw()
 {
 	static auto header = out_hdr({ "NIC", "TX pkts", "RX pkts", "TX bytes", "RX bytes", "TX Mbps", "RX Mbps" });
-
 	auto& w = stdscr;
 
-	// auto nextline = [&]() { wmove(w, ++y, 0); };
-	auto wstr = [&](const std::string& s) {
-		waddstr(w, s.c_str());
+	// output clamped to screen size
+	auto wstr = [&](const std::string& s, bool pad = false) {
+		auto maxx = getmaxx(w);
+		auto maxy = getmaxy(w);
+		auto curx = getcurx(w);
+		auto cury = getcury(w);
+		if (cury < maxy) {
+			waddnstr(w, s.c_str(), maxx);
+			if (pad) {
+				while (curx++ < maxx) {
+					waddch(w, ' ');
+				}
+			}
+			wmove(w, cury + 1, 0);
+		}
 	};
 
 	// reset screen
 	werase(w);
 
-	// show current time and skip a line
-	waddstr(w, timebuf);
-
-	// show header and bars
+	// show time and header
 	wattron(w, A_REVERSE);
-	wstr(header);
+	wstr(header, true);
+	mvwaddstr(w, 0, 2, timebuf);
 	wattroff(w, A_REVERSE);
+	wmove(w, 1, 0);
 
-	// show totals
-	wattron(w, A_BOLD);
-	wstr(out_data(iface->name(), iface->total_stats()));
-	wattroff(w, A_BOLD);
+	for (auto& iface: ifaces) {
+		// show totals
+		wattron(w, A_BOLD);
+		wstr(out_data(iface->name(), iface->total_stats()));
+		wattroff(w, A_BOLD);
 
-	// show per-queue data
-	for (size_t i = 0, n = iface->queue_count(); i < n; ++i) {
-		wstr(out_data(std::to_string(i), iface->queue_stats(i)));
+		// show per-queue data
+		for (size_t i = 0, n = iface->queue_count(); i < n; ++i) {
+			wstr(out_data(std::to_string(i), iface->queue_stats(i)));
+		}
 	}
 
 	wrefresh(w);
@@ -153,11 +163,15 @@ void EthQApp::textmode_redraw()
 {
 	static auto header = out_hdr({ "nic", "txp", "rxp", "txb", "rxb", "txmbps", "rxmbps" });
 
-	std::cout << header;
-	std::cout << out_data(iface->name(), iface->total_stats());
+	std::cout << header << std::endl;
 
-	for (size_t i = 0, n = iface->queue_count(); i < n; ++i) {
-		std::cout << out_data(std::to_string(i), iface->queue_stats(i));
+	for (auto& iface: ifaces) {
+		std::cout << out_data(iface->name(), iface->total_stats());
+		std::cout << std::endl;
+		for (size_t i = 0, n = iface->queue_count(); i < n; ++i) {
+			std::cout << out_data(std::to_string(i), iface->queue_stats(i));
+			std::cout << std::endl;
+		}
 	}
 
 	std::cout << std::endl;
@@ -184,7 +198,7 @@ void EthQApp::time_wait()
 			throw_errno("clock_nanosleep");
 		}
 	}
-	strftime(timebuf, sizeof timebuf, "%Y-%m-%d %T\n\n", gmtime(&now.tv_sec));
+	strftime(timebuf, sizeof timebuf, "%T", gmtime(&now.tv_sec));
 }
 
 bool EthQApp::winmode_should_exit()
@@ -217,7 +231,9 @@ void EthQApp::run()
 	while (true) {
 		if (winmode && winmode_should_exit()) break;
 		time_wait();
-		iface->refresh();
+		for (auto& iface: ifaces) {
+			iface->refresh();
+		}
 
 		if (winmode) {
 			winmode_redraw();
@@ -243,12 +259,14 @@ EthQApp::EthQApp(int argc, char *argv[])
 		}
 	}
 
-	if (optind != (argc - 1)) {
-		usage(EXIT_FAILURE);
+	// connect to the interface(s)
+	while (optind < argc) {
+		ifaces.emplace_back(std::make_shared<Interface>(argv[optind++]));
 	}
 
-	// connect to the interface
-	iface = new Interface(argv[optind]);
+	if (ifaces.size() == 0) {
+		usage(EXIT_FAILURE);
+	}
 
 	// set up display mode
 	if (winmode) {
@@ -261,8 +279,6 @@ EthQApp::~EthQApp()
 	if (winmode) {
 		winmode_exit();
 	}
-
-	delete iface;
 }
 
 int main(int argc, char *argv[])
