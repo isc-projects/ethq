@@ -31,6 +31,12 @@ public:
 	{
 	}
 
+	void reset()
+	{
+		value = 0;
+		set = false;
+	}
+
 	operator bool() const {
 		return set;
 	}
