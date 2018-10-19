@@ -48,7 +48,6 @@ private:	// time handling
 	void			time_wait();
 
 private:	// text mode handling
-	void			textmode_init();
 	void			textmode_redraw();
 
 private:	// curses mode handling
@@ -153,10 +152,6 @@ void EthQApp::winmode_redraw()
 	}
 
 	wrefresh(w);
-}
-
-void EthQApp::textmode_init()
-{
 }
 
 void EthQApp::textmode_redraw()
@@ -267,8 +262,6 @@ EthQApp::EthQApp(int argc, char *argv[])
 	// set up display mode
 	if (winmode) {
 		winmode_init();
-	} else {
-		textmode_init();
 	}
 }
 
