@@ -93,12 +93,12 @@ static std::string out_bars()
 	return out.str();
 }
 
-static std::string out_hdr(const std::array<std::string, 7>& hdrs)
+static std::string out_hdr(const std::array<std::string, cols.size()>& hdrs)
 {
 	using namespace std;
 
 	ostringstream out;
-	for (size_t n = 0; n < 7; ++n) {
+	for (size_t n = 0; n < cols.size(); ++n) {
 		out << setw(cols[n]) << hdrs[n];
 		if (n != cols.size() - 1) {
 			out << " ";
@@ -146,6 +146,10 @@ void EthQApp::winmode_redraw()
 	auto w = sub;
 
 	auto nextline = [&]() { wmove(w, ++y, 0); };
+	auto wstr = [&](const std::string& s) {
+		waddstr(w, s.c_str());
+		nextline();
+	};
 
 	wclear(w);
 
@@ -160,21 +164,17 @@ void EthQApp::winmode_redraw()
 	nextline(); nextline();
 
 	// show header and bars
-	waddstr(w, header.c_str()); nextline();
-	waddstr(w, bars.c_str()); nextline();
+	wstr(header);
+	wstr(bars);
 
 	// show queue data
 	for (size_t i = 0, n = iface->queue_count(); i < n; ++i) {
-		const auto& out = out_data(std::to_string(i), iface->queue_stats(i));
-		waddstr(w, out.c_str()); nextline();
+		wstr(out_data(std::to_string(i), iface->queue_stats(i)));
 	}
 
-	// show bars
-	waddstr(w, bars.c_str()); nextline();
-
 	// show totals
-	const auto& out = out_data("Total", iface->total_stats());
-	waddstr(w, out.c_str());
+	wstr(bars);
+	wstr(out_data("Total", iface->total_stats()));
 
 	wrefresh(w);
 }
