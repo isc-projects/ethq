@@ -67,8 +67,11 @@ bool RegexParser::match_total(const std::string& key, size_t value, bool& rx, bo
 		auto& order = total.second;
 
 		// extract direction and type
-		rx = (ms(order[0]) == "rx");
-		bytes = (ms(order[1]) == "bytes");
+		auto direction = ms(order[0]);
+		auto type = ms(order[1]);
+
+		rx = (direction == "rx");
+		bytes = (type == "bytes") || (type == "octets");
 	}
 	return found;
 }
@@ -87,9 +90,13 @@ bool RegexParser::match_queue(const std::string& key, size_t value, bool& rx, bo
 		auto& order = queue.second;
 
 		// extract direction and type
-		rx = (ms(order[0]) == "rx");
-		bytes = (ms(order[1]) == "bytes");
-		qnum = std::stoi(ms(order[2]));
+		auto direction = ms(order[0]);
+		auto type = ms(order[1]);
+		auto qstr = ms(order[2]);
+
+		rx = (direction == "rx");
+		bytes = (type == "bytes") || (type == "octets");
+		qnum = std::stoi(qstr);
 	}
 	return found;
 }
