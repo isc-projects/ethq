@@ -39,7 +39,14 @@ protected:
 
 public:
 	StringsetParser(const driverlist_t& drivers);
-	virtual bool match(const std::string& key, size_t value, size_t& queue, bool& rx, bool& bytes) = 0;
+
+	virtual bool match_total(const std::string& key, size_t value, bool& rx, bool& bytes) {
+		return false;
+	}
+
+	virtual bool match_queue(const std::string& key, size_t value, bool& rx, bool& bytes, size_t& queue) {
+		return false;
+	}
 
 public:
 	static ptr_t find(const std::string& driver);
@@ -59,18 +66,27 @@ public:
 class RegexParser : public StringsetParser {
 
 public:
-	typedef std::array<int, 3> order_t;
+	typedef std::array<int, 2> total_order_t;
+	typedef std::array<int, 3> queue_order_t;
+
+	typedef std::pair<std::regex, total_order_t>	total_t;
+	typedef std::pair<std::regex, queue_order_t>	queue_t;
+
+public:
+	static total_t total_nomatch;
+	static queue_t queue_nomatch;
 
 protected:
-	order_t		order;
-	std::regex      re;
-	std::smatch     ma;
-	std::string     ms(size_t n);
+	std::smatch     	ma;
+	total_t			total;
+	queue_t			queue;
+	std::string     	ms(size_t n);
 
 public:
 	RegexParser(const driverlist_t& drivers,
-		    const std::string& match,
-		    const order_t& order = { 1, 2, 3});
+		    const total_t& total,
+		    const queue_t& queue);
 
-	virtual bool match(const std::string& key, size_t value, size_t& queue, bool& rx, bool& bytes);
+	virtual bool match_total(const std::string& key, size_t value, bool& rx, bool& bytes);
+	virtual bool match_queue(const std::string& key, size_t value, bool& rx, bool& bytes, size_t& qnum);
 };

@@ -13,6 +13,6 @@
 
 static RegexParser broadcom(
 	{ "bnx2x" },
-	"^\\[(\\d+)\\]: (rx|tx)_(bytes|ucast_packets)$",
-	{ 2, 1, 3 }
+	{ std::regex("^(rx|tx)_(bytes|[bum]cast_packets)$"), { 1, 2 } },
+	{ std::regex("^\\[(\\d+)\\]: (rx|tx)_(bytes|[bum]cast_packets)$"), { 2, 3, 1 } }
 );

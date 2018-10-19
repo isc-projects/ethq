@@ -37,6 +37,7 @@ private:
 
 	// string entry number -> queue_entry_t
 	typedef std::map<size_t, queue_entry_t> queue_map_t;
+	typedef std::map<size_t, size_t>	total_map_t;
 
 private:
 	std::string			_name;
@@ -45,11 +46,12 @@ private:
 
 	ifstats_t			tstats;
 	std::vector<ifstats_t>		qstats;
+
+	total_map_t			tmap;
 	queue_map_t			qmap;
 
 private:
-	std::vector<std::string> 	get_string_names();
-	void				build_queue_map(StringsetParser *parser);
+	void				build_stats_map(StringsetParser *parser);
 
 public:
 	Interface(const std::string& name);

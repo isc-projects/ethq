@@ -38,34 +38,58 @@ StringsetParser::ptr_t StringsetParser::find(const std::string& driver) {
 	}
 }
 
+RegexParser::total_t RegexParser::total_nomatch = { std::regex(""), { 0, 0 } };
+RegexParser::queue_t RegexParser::queue_nomatch = { std::regex(""), { 0, 0, 0 } };
+
 RegexParser::RegexParser(
 	const driverlist_t& drivers,
-	const std::string& match,
-	const order_t& order
-) : StringsetParser(drivers)
+	const total_t& total,
+	const queue_t& queue
+) : StringsetParser(drivers), total(total), queue(queue)
 {
-	re.assign(match);
-	std::copy(order.cbegin(), order.cend(), this->order.begin());
 }
 
 std::string RegexParser::ms(size_t n) {
 	return std::ssub_match(ma[n]).str();
 }
 
-bool RegexParser::match(const std::string& key, size_t value, size_t& queue, bool& rx, bool& bytes)
+bool RegexParser::match_total(const std::string& key, size_t value, bool& rx, bool& bytes)
 {
+	// ignore blank REs
+	if (total.first.mark_count() == 0) return false;
+
 	// transform key to lower case
 	std::string lower(key);
 	std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
 
-	auto found = std::regex_match(lower, ma, re);
+	auto found = std::regex_match(lower, ma, total.first);
 	if (found) {
+		auto& order = total.second;
+
 		// extract direction and type
 		rx = (ms(order[0]) == "rx");
-		bytes = (ms(order[2]) == "bytes");
+		bytes = (ms(order[1]) == "bytes");
+	}
+	return found;
+}
 
-		// allow queue to be unspecifird for single queue NICs
-		queue = order[1] ? std::stoi(ms(order[1])) : 0;
+bool RegexParser::match_queue(const std::string& key, size_t value, bool& rx, bool& bytes, size_t& qnum)
+{
+	// ignore blank REs
+	if (queue.first.mark_count() == 0) return false;
+
+	// transform key to lower case
+	std::string lower(key);
+	std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+
+	auto found = std::regex_match(lower, ma, queue.first);
+	if (found) {
+		auto& order = queue.second;
+
+		// extract direction and type
+		rx = (ms(order[0]) == "rx");
+		bytes = (ms(order[1]) == "bytes");
+		qnum = std::stoi(ms(order[2]));
 	}
 	return found;
 }

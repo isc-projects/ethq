@@ -41,17 +41,24 @@ void test(StringsetParser* parser, std::istream& is)
 		size_t value = std::stoull(std::ssub_match(ma[2]).str());
 
 		// test the input
-		bool match = parser->match(key, value, queue, rx, bytes);
+		bool match_total = parser->match_total(key, value, rx, bytes);
+		bool match_queue = parser->match_queue(key, value, rx, bytes, queue);
 
 		// generate output
 		std::cout << std::setw(3) << lineno++ << " | ";
-		if (match) {
-			std::cout << std::setw(3) << queue;
-			std::cout << " " << (rx ? "RX" : "TX");
-			std::cout << " " << (bytes ? "B" : "P");
+		if (match_total || match_queue) {
+			std::cout << std::setw(3);
+			if (match_queue) {
+				std::cout << queue;
+			} else {
+				std::cout << "";
+			}
+			std::cout << (match_total ? "=" : " ");
+			std::cout << " " << (rx ? "rx" : "tx");
+			std::cout << " " << (bytes ? "b" : "p");
 			std::cout << " ";
 		} else {
-			std::cout << "         ";
+			std::cout << "          ";
 		}
 		std::cout << "| " << line << std::endl;
 	}

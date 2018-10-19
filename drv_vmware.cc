@@ -31,10 +31,10 @@ public:
 		: StringsetParser(drivers)
 	{
 		re1.assign("^(Rx|Tx) Queue#$");
-		re2.assign("^\\s*ucast (pkts|bytes) (rx|tx)$");
+		re2.assign("^\\s*[bum]cast (pkts|bytes) (rx|tx)$");
 	}
 
-	bool match(const std::string& key, size_t value, size_t& queue, bool& rx, bool& bytes) {
+	bool match_queue(const std::string& key, size_t value, bool& rx, bool& bytes, size_t& queue) {
 
 		// check for match againt queue number
 		if (std::regex_match(key, ma, re1)) {
@@ -53,7 +53,6 @@ public:
 
 		return found;
 	}
-
 };
 
 static VMXNet3Parser vmxnet3(

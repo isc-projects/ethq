@@ -13,6 +13,6 @@
 
 static RegexParser r8169(
 	{ "r8169" },
-	"^(rx|tx)_(bytes|packets)$",
-	{ 1, 0, 2 }
+	{ std::regex("^(rx|tx)_(bytes|packets)$"), { 1, 2 } },
+	RegexParser::queue_nomatch
 );

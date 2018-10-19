@@ -26,8 +26,8 @@ Interface::Interface(const std::string& name)
 	}
 
 	// parse the list of stats strings
-	build_queue_map(parser);
-	if (qstats.size() == 0) {
+	build_stats_map(parser);
+	if (tmap.size() == 0 && qmap.size() == 0) {
 		throw std::runtime_error("couldn't parse NIC stats");
 	}
 }
@@ -46,12 +46,33 @@ void Interface::refresh()
 {
 	auto stats = ethtool->stats();
 
-	// reset totals
-	tstats.counts[0].reset();
-	tstats.counts[1].reset();
-	tstats.counts[2].reset();
-	tstats.counts[3].reset();
+	// reset total counters
+	for (size_t i = 0; i < 4; ++i) {
+		tstats.counts[i].reset();
+	}
 
+	// reset queue counters
+	for (auto& stats: qstats) {
+		for (size_t i = 0; i < 4; ++i) {
+			stats.counts[i].reset();
+		}
+	}
+
+	// accumulate total counters
+	for (const auto& pair: tmap) {
+
+		auto index = pair.first;
+		auto offset = pair.second;
+
+		uint64_t prev = state[index];
+		uint64_t current = stats[index];
+
+		// record the difference in value
+		uint64_t delta = (current > prev) ? (current - prev) : 0;
+		tstats.counts[offset] += delta;
+	}
+
+	// accumulate queue counters
 	for (const auto& pair: qmap) {
 
 		auto index = pair.first;
@@ -64,8 +85,12 @@ void Interface::refresh()
 
 		// record the difference in value
 		uint64_t delta = (current > prev) ? (current - prev) : 0;
-		qstats[queue].counts[offset] = delta;
-		tstats.counts[offset] += delta;
+		qstats[queue].counts[offset] += delta;
+
+		// auto-copy into the total if there's no explicit map of total fields
+		if (tmap.size() == 0) {
+			tstats.counts[offset] += delta;
+		}
 	}
 
 	std::swap(stats, state);
@@ -86,7 +111,7 @@ const Interface::ifstats_t& Interface::total_stats() const
 	return tstats;
 }
 
-void Interface::build_queue_map(StringsetParser* parser)
+void Interface::build_stats_map(StringsetParser* parser)
 {
 	size_t qcount = 0;
 	auto names = ethtool->stringset(ETH_SS_STATS);
@@ -102,17 +127,28 @@ void Interface::build_queue_map(StringsetParser* parser)
 		auto bytes = false;
 
 		//
+		// try to map the stringset entry to a NIC total
+		//
+		bool total_found = parser->match_total(names[i], state[i], rx, bytes);
+		if (total_found) {
+			// calculate offset into the four entry structure
+			auto offset = static_cast<size_t>(rx) + 2 * static_cast<size_t>(bytes);
+
+			tmap[i] = offset;
+		}
+
+		//
 		// try to map the stringset entry to a queue - pass the initially
 		// read value too, for those drivers (e.g. vmxnet3) that store the
 		// queue number if a key-value pair
 		//
-		bool found = parser->match(names[i], state[i], queue, rx, bytes);
+		bool queue_found = parser->match_queue(names[i], state[i], rx, bytes, queue);
 
 		//
 		// remember the individual rows that make up the four stats
 		// values for each NIC queue
 		//
-		if (found && (state[i] > 0)) {	// ignore zero-counters
+		if (queue_found && (state[i] > 0)) {	// ignore zero-counters
 
 			// calculate offset into the four entry structure
 			auto offset = static_cast<size_t>(rx) + 2 * static_cast<size_t>(bytes);
