@@ -15,14 +15,9 @@
 #include <stdexcept>
 #include <cstdlib>
 #include <ctime>
-#include <cstring>
-#include <vector>
-#include <map>
-#include <algorithm>
+#include <array>
 
 #include <getopt.h>
-#include <time.h>
-#include <poll.h>
 #include <ncurses.h>
 
 #include "interface.h"
@@ -158,18 +153,14 @@ void EthQApp::textmode_redraw()
 {
 	static auto header = out_hdr({ "nic", "txp", "rxp", "txb", "rxb", "txmbps", "rxmbps" });
 
-	auto wstr = [&](const std::string& s) {
-		fputs(s.c_str(), stdout);
-	};
-
-	wstr(header);
-	wstr(out_data(iface->name(), iface->total_stats()));
+	std::cout << header;
+	std::cout << out_data(iface->name(), iface->total_stats());
 
 	for (size_t i = 0, n = iface->queue_count(); i < n; ++i) {
-		wstr(out_data(std::to_string(i), iface->queue_stats(i)));
+		std::cout << out_data(std::to_string(i), iface->queue_stats(i));
 	}
 
-	fputc('\n', stdout);
+	std::cout << std::endl;
 }
 
 void EthQApp::time_get()
