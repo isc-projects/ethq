@@ -11,8 +11,14 @@
 
 #include "parser.h"
 
-static RegexParser broadcom(
+static RegexParser bnx2x(
 	{ "bnx2x" },
 	{ std::regex("^(rx|tx)_(bytes|[bum]cast_packets)$"), { 1, 2 } },
 	{ std::regex("^\\[(\\d+)\\]: (rx|tx)_(bytes|[bum]cast_packets)$"), { 2, 3, 1 } }
+);
+
+static RegexParser tg3(
+	{ "tg3" },
+	{ std::regex("^(rx|tx)_(octets|[bum]cast_packets)$"), { 1, 2 } },
+	RegexParser::queue_nomatch
 );
