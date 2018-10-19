@@ -52,7 +52,6 @@ private:	// text mode handling
 	void			textmode_redraw();
 
 private:	// curses mode handling
-	WINDOW*			sub;
 	void			winmode_redraw();
 	void			winmode_init();
 	bool			winmode_should_exit();
@@ -74,24 +73,7 @@ static void usage(int status = EXIT_SUCCESS)
 	exit(status);
 }
 
-static std::array<size_t, 7> cols = { 5, 8, 8, 10, 10, 10, 10 };
-
-static std::string out_bars()
-{
-	using namespace std;
-
-	ostringstream out;
-	for (size_t n = 0; n < cols.size(); ++n) {
-		for (size_t i = 0; i < cols[n]; ++i) {
-			out << "-";
-		}
-		if (n != cols.size() - 1) {
-			out << " ";
-		}
-	}
-
-	return out.str();
-}
+static std::array<size_t, 7> cols = { IFNAMSIZ, 8, 8, 10, 10, 10, 10 };
 
 static std::string out_hdr(const std::array<std::string, cols.size()>& hdrs)
 {
@@ -104,6 +86,7 @@ static std::string out_hdr(const std::array<std::string, cols.size()>& hdrs)
 			out << " ";
 		}
 	}
+	out << " \n";
 
 	return out.str();
 }
@@ -121,11 +104,10 @@ static std::string out_data(const std::string& label, const Interface::ifstats_t
 	}
 
 	for (size_t n = 5; n < 7; ++n) {
-		out << setw(cols[n]);
+		out << setw(cols[n]) << fixed << setprecision(3);
 		const auto& bps = q[n - 3];
 		if (bps) {
-			auto mbps = static_cast<uint64_t>(bps) * 8 / 1e6;
-			out << fixed << setprecision(3) << mbps;
+			out << static_cast<uint64_t>(bps) * 8 / 1e6;
 		} else {
 			out << "-";
 		}
@@ -133,67 +115,66 @@ static std::string out_data(const std::string& label, const Interface::ifstats_t
 			out << " ";
 		}
 	}
+	out << "\n";
 
 	return out.str();
 }
 
 void EthQApp::winmode_redraw()
 {
-	static auto header = out_hdr({ "Queue", "TX pkts", "RX pkts", "TX bytes", "RX bytes", "TX Mbps", "RX Mbps" });
-	static auto bars = out_bars();
+	static auto header = out_hdr({ "NIC", "TX pkts", "RX pkts", "TX bytes", "RX bytes", "TX Mbps", "RX Mbps" });
 
-	int y = 0;
-	auto w = sub;
+	auto& w = stdscr;
 
-	auto nextline = [&]() { wmove(w, ++y, 0); };
+	// auto nextline = [&]() { wmove(w, ++y, 0); };
 	auto wstr = [&](const std::string& s) {
 		waddstr(w, s.c_str());
-		nextline();
 	};
 
-	wclear(w);
-
-	// show driver and interface name
-	wmove(w, y, 0);
-	waddstr(w, iface->info().c_str());
+	// reset screen
+	werase(w);
 
 	// show current time and skip a line
-	wmove(w, y, 47);
-	waddch(w, ' ');
 	waddstr(w, timebuf);
-	nextline(); nextline();
 
 	// show header and bars
+	wattron(w, A_REVERSE);
 	wstr(header);
-	wstr(bars);
+	wattroff(w, A_REVERSE);
 
-	// show queue data
+	// show totals
+	wattron(w, A_BOLD);
+	wstr(out_data(iface->name(), iface->total_stats()));
+	wattroff(w, A_BOLD);
+
+	// show per-queue data
 	for (size_t i = 0, n = iface->queue_count(); i < n; ++i) {
 		wstr(out_data(std::to_string(i), iface->queue_stats(i)));
 	}
-
-	// show totals
-	wstr(bars);
-	wstr(out_data("Total", iface->total_stats()));
 
 	wrefresh(w);
 }
 
 void EthQApp::textmode_init()
 {
-	static auto header = out_hdr({ "q", "txp", "rxp", "txb", "rxb", "txmbps", "rxmbps" });
-	puts(header.c_str());
 }
 
 void EthQApp::textmode_redraw()
 {
+	static auto header = out_hdr({ "nic", "txp", "rxp", "txb", "rxb", "txmbps", "rxmbps" });
+
+	auto wstr = [&](const std::string& s) {
+		fputs(s.c_str(), stdout);
+	};
+
+	wstr(header);
+	wstr(out_data(iface->name(), iface->total_stats()));
+
 	for (size_t i = 0, n = iface->queue_count(); i < n; ++i) {
-		auto out = out_data(std::to_string(i), iface->queue_stats(i));
-		puts(out.c_str());
+		wstr(out_data(std::to_string(i), iface->queue_stats(i)));
 	}
 
-	auto out = out_data("Total", iface->total_stats());
-	puts(out.c_str());
+	fputc('\n', stdout);
 }
 
 void EthQApp::time_get()
@@ -217,7 +198,7 @@ void EthQApp::time_wait()
 			throw_errno("clock_nanosleep");
 		}
 	}
-	strftime(timebuf, sizeof timebuf, "%Y-%m-%d %T", gmtime(&now.tv_sec));
+	strftime(timebuf, sizeof timebuf, "%Y-%m-%d %T\n\n", gmtime(&now.tv_sec));
 }
 
 bool EthQApp::winmode_should_exit()
@@ -236,8 +217,6 @@ void EthQApp::winmode_init()
 	intrflush(stdscr, FALSE);
 	keypad(stdscr, TRUE);
 	curs_set(0);
-
-	sub = newwin(iface->queue_count() + 8, 67, 1, 1);
 }
 
 void EthQApp::winmode_exit()

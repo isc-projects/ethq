@@ -14,7 +14,7 @@
 #include "parser.h"
 
 Interface::Interface(const std::string& name)
-	: name(name)
+	: _name(name)
 {
 	ethtool = new Ethtool(name);
 	state = ethtool->stats();
@@ -37,9 +37,9 @@ Interface::~Interface()
 	delete ethtool;
 }
 
-const std::string Interface::info() const
+const std::string Interface::name() const
 {
-	return ethtool->driver() + ":" + name;
+	return _name;
 }
 
 void Interface::refresh()

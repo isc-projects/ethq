@@ -39,7 +39,7 @@ private:
 	typedef std::map<size_t, queue_entry_t> queue_map_t;
 
 private:
-	std::string			name;
+	std::string			_name;
 	Ethtool*			ethtool = nullptr;
 	Ethtool::stats_t		state;
 
@@ -56,7 +56,7 @@ public:
 	~Interface();
 
 public:
-	const std::string		info() const;
+	const std::string		name() const;
 	void				refresh();
 
 	size_t				queue_count() const;
