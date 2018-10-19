@@ -20,9 +20,11 @@ Interface::Interface(const std::string& name)
 	state = ethtool->stats();
 
 	// find the right code to parse this NIC's stats output
-	auto parser = StringsetParser::find(ethtool->driver());
+	auto driver = ethtool->driver();
+
+	auto parser = StringsetParser::find(driver);
 	if (!parser) {
-		throw std::runtime_error("Unsupported NIC driver");
+		throw std::runtime_error("Unsupported NIC driver (" + driver + ":" + name + ")");
 	}
 
 	// parse the list of stats strings
