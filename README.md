@@ -2,9 +2,10 @@ EthQ
 ====
 
 Displays an auto-updating per-second count of the number of packets
-and bytes being handled by each queue on a multi-queue NIC.
+and bytes being handled by each specified NIC, and on multi-queue NICs
+shows the per-queue statistics too.
 
-Usage: `ethq [-t] <interface>`.
+Usage: `ethq [-t] <interface> [interface ...]`.
 
 With `-t` specified the display just scrolls on the terminal, otherwise
 it runs in an auto-refreshing window.
