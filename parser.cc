@@ -38,14 +38,16 @@ StringsetParser::ptr_t StringsetParser::find(const std::string& driver) {
 	}
 }
 
-RegexParser::total_t RegexParser::total_nomatch = { std::regex(""), { 0, 0 } };
-RegexParser::queue_t RegexParser::queue_nomatch = { std::regex(""), { 0, 0, 0 } };
+RegexParser::total_str_t RegexParser::total_nomatch = { "", { 0, 0 } };
+RegexParser::queue_str_t RegexParser::queue_nomatch = { "", { 0, 0, 0 } };
 
 RegexParser::RegexParser(
 	const driverlist_t& drivers,
-	const total_t& total,
-	const queue_t& queue
-) : StringsetParser(drivers), total(total), queue(queue)
+	const total_str_t& total,
+	const queue_str_t& queue
+) : StringsetParser(drivers),
+    total(std::regex(total.first), total.second),
+    queue(std::regex(queue.first), queue.second)
 {
 }
 

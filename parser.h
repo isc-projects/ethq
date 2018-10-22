@@ -72,9 +72,12 @@ public:
 	typedef std::pair<std::regex, total_order_t>	total_t;
 	typedef std::pair<std::regex, queue_order_t>	queue_t;
 
+	typedef std::pair<std::string, total_order_t>	total_str_t;
+	typedef std::pair<std::string, queue_order_t>	queue_str_t;
+
 public:
-	static total_t total_nomatch;
-	static queue_t queue_nomatch;
+	static total_str_t	total_nomatch;
+	static queue_str_t 	queue_nomatch;
 
 protected:
 	std::smatch     	ma;
@@ -84,8 +87,8 @@ protected:
 
 public:
 	RegexParser(const driverlist_t& drivers,
-		    const total_t& total,
-		    const queue_t& queue);
+		    const total_str_t& total,
+		    const queue_str_t& queue);
 
 	virtual bool match_total(const std::string& key, size_t value, bool& rx, bool& bytes);
 	virtual bool match_queue(const std::string& key, size_t value, bool& rx, bool& bytes, size_t& qnum);

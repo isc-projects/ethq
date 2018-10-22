@@ -13,6 +13,6 @@
 
 static RegexParser mellaonx_mlx5_core( 
 	{ "mlx5_core" },
-	{ std::regex("^(rx|tx)_(bytes|packets)$"), { 1, 2} },
-	{ std::regex("^(rx|tx)(\\d+)_(?:0_)?(bytes|packets)$"), { 1, 3, 2 } }
+	{ "^(rx|tx)_(bytes|packets)$", { 1, 2} },
+	{ "^(rx|tx)(\\d+)_(?:0_)?(bytes|packets)$", { 1, 3, 2 } }
 );

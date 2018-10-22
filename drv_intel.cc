@@ -14,11 +14,11 @@
 static RegexParser intel_generic(
 	{ "ixgbe", "igb" },
 	RegexParser::total_nomatch,
-	{ std::regex("^(rx|tx)_queue_(\\d+)_(bytes|packets)$"), { 1, 3, 2 } }
+	{ "^(rx|tx)_queue_(\\d+)_(bytes|packets)$", { 1, 3, 2 } }
 );
 
 static RegexParser intel_i40e(
 	{ "i40e" },
 	RegexParser::total_nomatch,
-	{ std::regex("^(rx|tx)-(\\d+)\\.\\1_(bytes|packets)$"), { 1, 3, 2 } }
+	{ "^(rx|tx)-(\\d+)\\.\\1_(bytes|packets)$", { 1, 3, 2 } }
 );
