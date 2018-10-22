@@ -1,309 +1,751 @@
-     rx_packets: 5487361
-     rx_bytes: 1063043816
-     tx_packets: 5116718
-     tx_bytes: 5813725708
-     rx_error_packets: 0
-     rx_error_bytes: 0
-     tx_error_packets: 0
-     tx_error_bytes: 0
-     rx_unicast_packets: 4493131
-     rx_unicast_bytes: 982145029
-     tx_unicast_packets: 4772046
-     tx_unicast_bytes: 5776095473
-     rx_multicast_packets: 966381
-     rx_multicast_bytes: 79227847
-     tx_multicast_packets: 344671
-     tx_multicast_bytes: 37630175
-     rx_broadcast_packets: 27849
-     rx_broadcast_bytes: 1670940
-     tx_broadcast_packets: 1
-     tx_broadcast_bytes: 60
-     tso_packets: 30907
-     tso_bytes: 112312099
-     lro_packets: 0
-     lro_bytes: 0
-     rx_csum_good: 4966737
-     rx_csum_none: 59180
-     rx_csum_sw: 461444
-     tx_csum_offload: 4768535
-     tx_queue_stopped: 0
-     tx_queue_wake: 0
-     tx_queue_dropped: 0
-     rx_wqe_err: 0
-     frames_tx: 5116718
-     frames_rx: 5487361
-     check_seq_err: 0
-     alignment_err: 0
-     octets_tx: 5834192580
-     octets_received: 1084993260
-     multicast_xmitted: 344671
-     broadcast_xmitted: 1
-     multicast_rx: 966381
-     broadcast_rx: 27849
-     in_range_len_errors: 0
-     out_of_range_len: 0
-     too_long_errors: 0
-     symbol_err: 0
-     mac_control_tx: 0
-     mac_control_rx: 0
-     unsupported_op_rx: 0
-     pause_ctrl_rx: 0
-     pause_ctrl_tx: 0
-     in_octets: 1084993260
-     in_ucast_pkts: 4493131
-     in_discards: 0
-     in_errors: 0
-     in_unknown_protos: 0
-     out_octets: 5834192580
-     out_ucast_pkts: 4772046
-     out_discards: 0
-     out_errors: 0
-     in_multicast_pkts: 966381
-     in_broadcast_pkts: 27849
-     out_multicast_pkts: 344671
-     out_broadcast_pkts: 1
-     drop_events: 0
-     octets: 1084993260
-     pkts: 5487361
-     broadcast_pkts: 27849
-     multicast_pkts: 966381
-     crc_align_errors: 0
-     undersize_pkts: 0
-     oversize_pkts: 0
-     fragments: 0
-     jabbers: 0
-     collisions: 0
-     p64octets: 497933
-     p65to127octets: 4514231
-     p128to255octets: 4491
-     p256to511octets: 71580
-     p512to1023octets: 13639
-     p1024to1518octets: 10033
-     p1519to2047octets: 375454
-     p2048to4095octets: 0
-     p4096to8191octets: 0
-     p8192to10239octets: 0
-     rx0_packets: 393312
-     rx0_csum_none: 59180
-     rx0_csum_sw: 313385
-     rx0_lro_packets: 0
-     rx0_lro_bytes: 0
-     rx0_wqe_err: 0
-     rx1_packets: 51777
-     rx1_csum_none: 0
-     rx1_csum_sw: 0
-     rx1_lro_packets: 0
-     rx1_lro_bytes: 0
-     rx1_wqe_err: 0
-     rx2_packets: 24899
-     rx2_csum_none: 0
-     rx2_csum_sw: 1
-     rx2_lro_packets: 0
-     rx2_lro_bytes: 0
-     rx2_wqe_err: 0
-     rx3_packets: 16247
-     rx3_csum_none: 0
-     rx3_csum_sw: 0
-     rx3_lro_packets: 0
-     rx3_lro_bytes: 0
-     rx3_wqe_err: 0
-     rx4_packets: 96079
-     rx4_csum_none: 0
-     rx4_csum_sw: 0
-     rx4_lro_packets: 0
-     rx4_lro_bytes: 0
-     rx4_wqe_err: 0
-     rx5_packets: 19611
-     rx5_csum_none: 0
-     rx5_csum_sw: 0
-     rx5_lro_packets: 0
-     rx5_lro_bytes: 0
-     rx5_wqe_err: 0
-     rx6_packets: 20393
-     rx6_csum_none: 0
-     rx6_csum_sw: 2
-     rx6_lro_packets: 0
-     rx6_lro_bytes: 0
-     rx6_wqe_err: 0
-     rx7_packets: 42464
-     rx7_csum_none: 0
-     rx7_csum_sw: 0
-     rx7_lro_packets: 0
-     rx7_lro_bytes: 0
-     rx7_wqe_err: 0
-     rx8_packets: 19679
-     rx8_csum_none: 0
-     rx8_csum_sw: 0
-     rx8_lro_packets: 0
-     rx8_lro_bytes: 0
-     rx8_wqe_err: 0
-     rx9_packets: 14954
-     rx9_csum_none: 0
-     rx9_csum_sw: 0
-     rx9_lro_packets: 0
-     rx9_lro_bytes: 0
-     rx9_wqe_err: 0
-     rx10_packets: 16268
-     rx10_csum_none: 0
-     rx10_csum_sw: 1
-     rx10_lro_packets: 0
-     rx10_lro_bytes: 0
-     rx10_wqe_err: 0
-     rx11_packets: 14971
-     rx11_csum_none: 0
-     rx11_csum_sw: 0
-     rx11_lro_packets: 0
-     rx11_lro_bytes: 0
-     rx11_wqe_err: 0
-     rx12_packets: 194883
-     rx12_csum_none: 0
-     rx12_csum_sw: 144573
-     rx12_lro_packets: 0
-     rx12_lro_bytes: 0
-     rx12_wqe_err: 0
-     rx13_packets: 21933
-     rx13_csum_none: 0
-     rx13_csum_sw: 3481
-     rx13_lro_packets: 0
-     rx13_lro_bytes: 0
-     rx13_wqe_err: 0
-     rx14_packets: 3553253
-     rx14_csum_none: 0
-     rx14_csum_sw: 0
-     rx14_lro_packets: 0
-     rx14_lro_bytes: 0
-     rx14_wqe_err: 0
-     rx15_packets: 513028
-     rx15_csum_none: 0
-     rx15_csum_sw: 1
-     rx15_lro_packets: 0
-     rx15_lro_bytes: 0
-     rx15_wqe_err: 0
-     tx0_0_packets: 10253
-     tx0_0_tso_packets: 597
-     tx0_0_tso_bytes: 1915572
-     tx0_0_csum_offload_none: 5641
-     tx0_0_stopped: 0
-     tx0_0_wake: 0
-     tx0_0_dropped: 0
-     tx0_0_nop: 289
-     tx1_0_packets: 14384
-     tx1_0_tso_packets: 720
-     tx1_0_tso_bytes: 2638819
-     tx1_0_csum_offload_none: 4645
-     tx1_0_stopped: 0
-     tx1_0_wake: 0
-     tx1_0_dropped: 0
-     tx1_0_nop: 407
-     tx2_0_packets: 609248
-     tx2_0_tso_packets: 4800
-     tx2_0_tso_bytes: 11904727
-     tx2_0_csum_offload_none: 396
-     tx2_0_stopped: 0
-     tx2_0_wake: 0
-     tx2_0_dropped: 0
-     tx2_0_nop: 21484
-     tx3_0_packets: 166706
-     tx3_0_tso_packets: 4064
-     tx3_0_tso_bytes: 16142856
-     tx3_0_csum_offload_none: 57063
-     tx3_0_stopped: 0
-     tx3_0_wake: 0
-     tx3_0_dropped: 0
-     tx3_0_nop: 3999
-     tx4_0_packets: 274678
-     tx4_0_tso_packets: 3760
-     tx4_0_tso_bytes: 15453957
-     tx4_0_csum_offload_none: 61576
-     tx4_0_stopped: 0
-     tx4_0_wake: 0
-     tx4_0_dropped: 0
-     tx4_0_nop: 6647
-     tx5_0_packets: 338389
-     tx5_0_tso_packets: 3438
-     tx5_0_tso_bytes: 13632118
-     tx5_0_csum_offload_none: 12282
-     tx5_0_stopped: 0
-     tx5_0_wake: 0
-     tx5_0_dropped: 0
-     tx5_0_nop: 7529
-     tx6_0_packets: 60260
-     tx6_0_tso_packets: 2617
-     tx6_0_tso_bytes: 10383058
-     tx6_0_csum_offload_none: 44300
-     tx6_0_stopped: 0
-     tx6_0_wake: 0
-     tx6_0_dropped: 0
-     tx6_0_nop: 1660
-     tx7_0_packets: 223473
-     tx7_0_tso_packets: 9885
-     tx7_0_tso_bytes: 37016888
-     tx7_0_csum_offload_none: 162260
-     tx7_0_stopped: 0
-     tx7_0_wake: 0
-     tx7_0_dropped: 0
-     tx7_0_nop: 6470
-     tx8_0_packets: 417465
-     tx8_0_tso_packets: 44
-     tx8_0_tso_bytes: 125450
-     tx8_0_csum_offload_none: 7
-     tx8_0_stopped: 0
-     tx8_0_wake: 0
-     tx8_0_dropped: 0
-     tx8_0_nop: 6940
-     tx9_0_packets: 405848
-     tx9_0_tso_packets: 74
-     tx9_0_tso_bytes: 225084
-     tx9_0_csum_offload_none: 0
-     tx9_0_stopped: 0
-     tx9_0_wake: 0
-     tx9_0_dropped: 0
-     tx9_0_nop: 6718
-     tx10_0_packets: 325387
-     tx10_0_tso_packets: 137
-     tx10_0_tso_bytes: 386252
-     tx10_0_csum_offload_none: 2
-     tx10_0_stopped: 0
-     tx10_0_wake: 0
-     tx10_0_dropped: 0
-     tx10_0_nop: 5441
-     tx11_0_packets: 457523
-     tx11_0_tso_packets: 145
-     tx11_0_tso_bytes: 491594
-     tx11_0_csum_offload_none: 3
-     tx11_0_stopped: 0
-     tx11_0_wake: 0
-     tx11_0_dropped: 0
-     tx11_0_nop: 7607
-     tx12_0_packets: 365360
-     tx12_0_tso_packets: 140
-     tx12_0_tso_bytes: 417982
-     tx12_0_csum_offload_none: 1
-     tx12_0_stopped: 0
-     tx12_0_wake: 0
-     tx12_0_dropped: 0
-     tx12_0_nop: 6172
-     tx13_0_packets: 490698
-     tx13_0_tso_packets: 223
-     tx13_0_tso_bytes: 823332
-     tx13_0_csum_offload_none: 4
-     tx13_0_stopped: 0
-     tx13_0_wake: 0
-     tx13_0_dropped: 0
-     tx13_0_nop: 8195
-     tx14_0_packets: 461523
-     tx14_0_tso_packets: 114
-     tx14_0_tso_bytes: 327711
-     tx14_0_csum_offload_none: 0
-     tx14_0_stopped: 0
-     tx14_0_wake: 0
-     tx14_0_dropped: 0
-     tx14_0_nop: 7694
-     tx15_0_packets: 444136
-     tx15_0_tso_packets: 149
-     tx15_0_tso_bytes: 426699
-     tx15_0_csum_offload_none: 3
-     tx15_0_stopped: 0
-     tx15_0_wake: 0
-     tx15_0_dropped: 0
-     tx15_0_nop: 7392
+rx_packets: 845320277
+rx_bytes: 2195783498134
+tx_packets: 896117891
+tx_bytes: 2655285206479
+tx_tso_packets: 56041559
+tx_tso_bytes: 1822751919330
+tx_tso_inner_packets: 0
+tx_tso_inner_bytes: 0
+tx_added_vlan_packets: 726871730
+rx_lro_packets: 0
+rx_lro_bytes: 0
+rx_removed_vlan_packets: 845149735
+rx_csum_unnecessary: 0
+rx_csum_none: 49455
+rx_csum_complete: 845270822
+rx_csum_unnecessary_inner: 0
+rx_xdp_drop: 0
+rx_xdp_tx: 0
+rx_xdp_tx_full: 0
+tx_csum_none: 290909
+tx_csum_partial: 726606998
+tx_csum_partial_inner: 0
+tx_queue_stopped: 0
+tx_queue_wake: 0
+tx_queue_dropped: 0
+tx_xmit_more: 548410
+rx_wqe_err: 0
+rx_mpwqe_filler: 8251861
+rx_buff_alloc_err: 0
+rx_cqe_compress_blks: 0
+rx_cqe_compress_pkts: 0
+rx_page_reuse: 0
+rx_cache_reuse: 546395557
+rx_cache_full: 696843
+rx_cache_empty: 10752
+rx_cache_busy: 699867
+rx_cache_waive: 3584
+link_down_events_phy: 0
+rx_out_of_buffer: 0
+rx_vport_unicast_packets: 844884988
+rx_vport_unicast_bytes: 2199120290572
+tx_vport_unicast_packets: 895829896
+tx_vport_unicast_bytes: 2658838156693
+rx_vport_multicast_packets: 807705
+rx_vport_multicast_bytes: 66227437
+tx_vport_multicast_packets: 287994
+tx_vport_multicast_bytes: 31416578
+rx_vport_broadcast_packets: 23269
+rx_vport_broadcast_bytes: 1396140
+tx_vport_broadcast_packets: 1
+tx_vport_broadcast_bytes: 60
+rx_vport_rdma_unicast_packets: 0
+rx_vport_rdma_unicast_bytes: 0
+tx_vport_rdma_unicast_packets: 0
+tx_vport_rdma_unicast_bytes: 0
+rx_vport_rdma_multicast_packets: 0
+rx_vport_rdma_multicast_bytes: 0
+tx_vport_rdma_multicast_packets: 0
+tx_vport_rdma_multicast_bytes: 0
+tx_packets_phy: 896117891
+rx_packets_phy: 845715962
+rx_crc_errors_phy: 0
+tx_bytes_phy: 2662454044895
+rx_bytes_phy: 2202570777997
+tx_multicast_phy: 287994
+tx_broadcast_phy: 1
+rx_multicast_phy: 807704
+rx_broadcast_phy: 23270
+rx_in_range_len_errors_phy: 0
+rx_out_of_range_len_phy: 0
+rx_oversize_pkts_phy: 0
+rx_symbol_err_phy: 0
+tx_mac_control_phy: 0
+rx_mac_control_phy: 0
+rx_unsupported_op_phy: 0
+rx_pause_ctrl_phy: 0
+tx_pause_ctrl_phy: 0
+rx_discards_phy: 0
+tx_discards_phy: 0
+tx_errors_phy: 0
+rx_undersize_pkts_phy: 0
+rx_fragments_phy: 0
+rx_jabbers_phy: 0
+rx_64_bytes_phy: 416040
+rx_65_to_127_bytes_phy: 289181634
+rx_128_to_255_bytes_phy: 6765114
+rx_256_to_511_bytes_phy: 34863433
+rx_512_to_1023_bytes_phy: 2467488
+rx_1024_to_1518_bytes_phy: 3373839
+rx_1519_to_2047_bytes_phy: 8207970
+rx_2048_to_4095_bytes_phy: 341551408
+rx_4096_to_8191_bytes_phy: 17187382
+rx_8192_to_10239_bytes_phy: 141701654
+rx_pcs_symbol_err_phy: 0
+rx_corrected_bits_phy: 0
+rx_buffer_passed_thres_phy: 0
+rx_pci_signal_integrity: 0
+tx_pci_signal_integrity: 34
+outbound_pci_stalled_rd: 0
+outbound_pci_stalled_wr: 0
+outbound_pci_stalled_rd_events: 0
+outbound_pci_stalled_wr_events: 0
+rx_prio0_bytes: 2202570777997
+rx_prio0_packets: 845715962
+tx_prio0_bytes: 2662454044895
+tx_prio0_packets: 896117891
+rx_prio1_bytes: 0
+rx_prio1_packets: 0
+tx_prio1_bytes: 0
+tx_prio1_packets: 0
+rx_prio2_bytes: 0
+rx_prio2_packets: 0
+tx_prio2_bytes: 0
+tx_prio2_packets: 0
+rx_prio3_bytes: 0
+rx_prio3_packets: 0
+tx_prio3_bytes: 0
+tx_prio3_packets: 0
+rx_prio4_bytes: 0
+rx_prio4_packets: 0
+tx_prio4_bytes: 0
+tx_prio4_packets: 0
+rx_prio5_bytes: 0
+rx_prio5_packets: 0
+tx_prio5_bytes: 0
+tx_prio5_packets: 0
+rx_prio6_bytes: 0
+rx_prio6_packets: 0
+tx_prio6_bytes: 0
+tx_prio6_packets: 0
+rx_prio7_bytes: 0
+rx_prio7_packets: 0
+tx_prio7_bytes: 0
+tx_prio7_packets: 0
+rx_global_pause: 0
+rx_global_pause_duration: 0
+tx_global_pause: 0
+tx_global_pause_duration: 0
+rx_global_pause_transition: 0
+module_unplug: 0
+module_bus_stuck: 0
+module_high_temp: 0
+module_bad_shorted: 0
+rx0_packets: 53947906
+rx0_bytes: 146815482364
+rx0_csum_complete: 53898451
+rx0_csum_unnecessary: 0
+rx0_csum_unnecessary_inner: 0
+rx0_csum_none: 49455
+rx0_xdp_drop: 0
+rx0_xdp_tx: 0
+rx0_xdp_tx_full: 0
+rx0_lro_packets: 0
+rx0_lro_bytes: 0
+rx0_removed_vlan_packets: 53898451
+rx0_wqe_err: 0
+rx0_mpwqe_filler: 555477
+rx0_buff_alloc_err: 0
+rx0_cqe_compress_blks: 0
+rx0_cqe_compress_pkts: 0
+rx0_page_reuse: 0
+rx0_cache_reuse: 36523177
+rx0_cache_full: 51032
+rx0_cache_empty: 448
+rx0_cache_busy: 51223
+rx0_cache_waive: 0
+rx1_packets: 45327809
+rx1_bytes: 118939650984
+rx1_csum_complete: 45327809
+rx1_csum_unnecessary: 0
+rx1_csum_unnecessary_inner: 0
+rx1_csum_none: 0
+rx1_xdp_drop: 0
+rx1_xdp_tx: 0
+rx1_xdp_tx_full: 0
+rx1_lro_packets: 0
+rx1_lro_bytes: 0
+rx1_removed_vlan_packets: 45327809
+rx1_wqe_err: 0
+rx1_mpwqe_filler: 445369
+rx1_buff_alloc_err: 0
+rx1_cqe_compress_blks: 0
+rx1_cqe_compress_pkts: 0
+rx1_page_reuse: 0
+rx1_cache_reuse: 29574716
+rx1_cache_full: 29125
+rx1_cache_empty: 448
+rx1_cache_busy: 29316
+rx1_cache_waive: 0
+rx2_packets: 56127573
+rx2_bytes: 158096787259
+rx2_csum_complete: 56127573
+rx2_csum_unnecessary: 0
+rx2_csum_unnecessary_inner: 0
+rx2_csum_none: 0
+rx2_xdp_drop: 0
+rx2_xdp_tx: 0
+rx2_xdp_tx_full: 0
+rx2_lro_packets: 0
+rx2_lro_bytes: 0
+rx2_removed_vlan_packets: 56127573
+rx2_wqe_err: 0
+rx2_mpwqe_filler: 596025
+rx2_buff_alloc_err: 0
+rx2_cqe_compress_blks: 0
+rx2_cqe_compress_pkts: 0
+rx2_page_reuse: 0
+rx2_cache_reuse: 39304200
+rx2_cache_full: 76601
+rx2_cache_empty: 448
+rx2_cache_busy: 76792
+rx2_cache_waive: 0
+rx3_packets: 55915567
+rx3_bytes: 153682362509
+rx3_csum_complete: 55915567
+rx3_csum_unnecessary: 0
+rx3_csum_unnecessary_inner: 0
+rx3_csum_none: 0
+rx3_xdp_drop: 0
+rx3_xdp_tx: 0
+rx3_xdp_tx_full: 0
+rx3_lro_packets: 0
+rx3_lro_bytes: 0
+rx3_removed_vlan_packets: 55915567
+rx3_wqe_err: 0
+rx3_mpwqe_filler: 578601
+rx3_buff_alloc_err: 0
+rx3_cqe_compress_blks: 0
+rx3_cqe_compress_pkts: 0
+rx3_page_reuse: 0
+rx3_cache_reuse: 38202093
+rx3_cache_full: 80468
+rx3_cache_empty: 448
+rx3_cache_busy: 80659
+rx3_cache_waive: 0
+rx4_packets: 57384015
+rx4_bytes: 147625729809
+rx4_csum_complete: 57384015
+rx4_csum_unnecessary: 0
+rx4_csum_unnecessary_inner: 0
+rx4_csum_none: 0
+rx4_xdp_drop: 0
+rx4_xdp_tx: 0
+rx4_xdp_tx_full: 0
+rx4_lro_packets: 0
+rx4_lro_bytes: 0
+rx4_removed_vlan_packets: 57384015
+rx4_wqe_err: 0
+rx4_mpwqe_filler: 554803
+rx4_buff_alloc_err: 0
+rx4_cqe_compress_blks: 0
+rx4_cqe_compress_pkts: 0
+rx4_page_reuse: 0
+rx4_cache_reuse: 36748991
+rx4_cache_full: 52098
+rx4_cache_empty: 448
+rx4_cache_busy: 52289
+rx4_cache_waive: 0
+rx5_packets: 55903387
+rx5_bytes: 132595334095
+rx5_csum_complete: 55903387
+rx5_csum_unnecessary: 0
+rx5_csum_unnecessary_inner: 0
+rx5_csum_none: 0
+rx5_xdp_drop: 0
+rx5_xdp_tx: 0
+rx5_xdp_tx_full: 0
+rx5_lro_packets: 0
+rx5_lro_bytes: 0
+rx5_removed_vlan_packets: 55903387
+rx5_wqe_err: 0
+rx5_mpwqe_filler: 497225
+rx5_buff_alloc_err: 0
+rx5_cqe_compress_blks: 0
+rx5_cqe_compress_pkts: 0
+rx5_page_reuse: 0
+rx5_cache_reuse: 33048587
+rx5_cache_full: 33526
+rx5_cache_empty: 448
+rx5_cache_busy: 33717
+rx5_cache_waive: 0
+rx6_packets: 54899841
+rx6_bytes: 140873394653
+rx6_csum_complete: 54899841
+rx6_csum_unnecessary: 0
+rx6_csum_unnecessary_inner: 0
+rx6_csum_none: 0
+rx6_xdp_drop: 0
+rx6_xdp_tx: 0
+rx6_xdp_tx_full: 0
+rx6_lro_packets: 0
+rx6_lro_bytes: 0
+rx6_removed_vlan_packets: 54899841
+rx6_wqe_err: 0
+rx6_mpwqe_filler: 529654
+rx6_buff_alloc_err: 0
+rx6_cqe_compress_blks: 0
+rx6_cqe_compress_pkts: 0
+rx6_page_reuse: 0
+rx6_cache_reuse: 35068414
+rx6_cache_full: 50755
+rx6_cache_empty: 448
+rx6_cache_busy: 50946
+rx6_cache_waive: 0
+rx7_packets: 51477168
+rx7_bytes: 143564316284
+rx7_csum_complete: 51477168
+rx7_csum_unnecessary: 0
+rx7_csum_unnecessary_inner: 0
+rx7_csum_none: 0
+rx7_xdp_drop: 0
+rx7_xdp_tx: 0
+rx7_xdp_tx_full: 0
+rx7_lro_packets: 0
+rx7_lro_bytes: 0
+rx7_removed_vlan_packets: 51477168
+rx7_wqe_err: 0
+rx7_mpwqe_filler: 541429
+rx7_buff_alloc_err: 0
+rx7_cqe_compress_blks: 0
+rx7_cqe_compress_pkts: 0
+rx7_page_reuse: 0
+rx7_cache_reuse: 35731713
+rx7_cache_full: 45696
+rx7_cache_empty: 448
+rx7_cache_busy: 45887
+rx7_cache_waive: 0
+rx8_packets: 50709885
+rx8_bytes: 123673981628
+rx8_csum_complete: 50709885
+rx8_csum_unnecessary: 0
+rx8_csum_unnecessary_inner: 0
+rx8_csum_none: 0
+rx8_xdp_drop: 0
+rx8_xdp_tx: 0
+rx8_xdp_tx_full: 0
+rx8_lro_packets: 0
+rx8_lro_bytes: 0
+rx8_removed_vlan_packets: 50709885
+rx8_wqe_err: 0
+rx8_mpwqe_filler: 463855
+rx8_buff_alloc_err: 0
+rx8_cqe_compress_blks: 0
+rx8_cqe_compress_pkts: 0
+rx8_page_reuse: 0
+rx8_cache_reuse: 30804748
+rx8_cache_full: 21941
+rx8_cache_empty: 896
+rx8_cache_busy: 22132
+rx8_cache_waive: 448
+rx9_packets: 46685206
+rx9_bytes: 116915921860
+rx9_csum_complete: 46685206
+rx9_csum_unnecessary: 0
+rx9_csum_unnecessary_inner: 0
+rx9_csum_none: 0
+rx9_xdp_drop: 0
+rx9_xdp_tx: 0
+rx9_xdp_tx_full: 0
+rx9_lro_packets: 0
+rx9_lro_bytes: 0
+rx9_removed_vlan_packets: 46685206
+rx9_wqe_err: 0
+rx9_mpwqe_filler: 436607
+rx9_buff_alloc_err: 0
+rx9_cqe_compress_blks: 0
+rx9_cqe_compress_pkts: 0
+rx9_page_reuse: 0
+rx9_cache_reuse: 29072348
+rx9_cache_full: 26725
+rx9_cache_empty: 896
+rx9_cache_busy: 26916
+rx9_cache_waive: 448
+rx10_packets: 56169341
+rx10_bytes: 125016058769
+rx10_csum_complete: 56169341
+rx10_csum_unnecessary: 0
+rx10_csum_unnecessary_inner: 0
+rx10_csum_none: 0
+rx10_xdp_drop: 0
+rx10_xdp_tx: 0
+rx10_xdp_tx_full: 0
+rx10_lro_packets: 0
+rx10_lro_bytes: 0
+rx10_removed_vlan_packets: 56169341
+rx10_wqe_err: 0
+rx10_mpwqe_filler: 467868
+rx10_buff_alloc_err: 0
+rx10_cqe_compress_blks: 0
+rx10_cqe_compress_pkts: 0
+rx10_page_reuse: 0
+rx10_cache_reuse: 31169201
+rx10_cache_full: 30096
+rx10_cache_empty: 896
+rx10_cache_busy: 30287
+rx10_cache_waive: 448
+rx11_packets: 52042939
+rx11_bytes: 145121723975
+rx11_csum_complete: 52042939
+rx11_csum_unnecessary: 0
+rx11_csum_unnecessary_inner: 0
+rx11_csum_none: 0
+rx11_xdp_drop: 0
+rx11_xdp_tx: 0
+rx11_xdp_tx_full: 0
+rx11_lro_packets: 0
+rx11_lro_bytes: 0
+rx11_removed_vlan_packets: 52042939
+rx11_wqe_err: 0
+rx11_mpwqe_filler: 545960
+rx11_buff_alloc_err: 0
+rx11_cqe_compress_blks: 0
+rx11_cqe_compress_pkts: 0
+rx11_page_reuse: 0
+rx11_cache_reuse: 36075583
+rx11_cache_full: 48066
+rx11_cache_empty: 896
+rx11_cache_busy: 48257
+rx11_cache_waive: 448
+rx12_packets: 59802388
+rx12_bytes: 140720935477
+rx12_csum_complete: 59802388
+rx12_csum_unnecessary: 0
+rx12_csum_unnecessary_inner: 0
+rx12_csum_none: 0
+rx12_xdp_drop: 0
+rx12_xdp_tx: 0
+rx12_xdp_tx_full: 0
+rx12_lro_packets: 0
+rx12_lro_bytes: 0
+rx12_removed_vlan_packets: 59681301
+rx12_wqe_err: 0
+rx12_mpwqe_filler: 527017
+rx12_buff_alloc_err: 0
+rx12_cqe_compress_blks: 0
+rx12_cqe_compress_pkts: 0
+rx12_page_reuse: 0
+rx12_cache_reuse: 35053509
+rx12_cache_full: 34492
+rx12_cache_empty: 896
+rx12_cache_busy: 34683
+rx12_cache_waive: 448
+rx13_packets: 46788329
+rx13_bytes: 121964675871
+rx13_csum_complete: 46788329
+rx13_csum_unnecessary: 0
+rx13_csum_unnecessary_inner: 0
+rx13_csum_none: 0
+rx13_xdp_drop: 0
+rx13_xdp_tx: 0
+rx13_xdp_tx_full: 0
+rx13_lro_packets: 0
+rx13_lro_bytes: 0
+rx13_removed_vlan_packets: 46788329
+rx13_wqe_err: 0
+rx13_mpwqe_filler: 457625
+rx13_buff_alloc_err: 0
+rx13_cqe_compress_blks: 0
+rx13_cqe_compress_pkts: 0
+rx13_page_reuse: 0
+rx13_cache_reuse: 30324518
+rx13_cache_full: 35547
+rx13_cache_empty: 896
+rx13_cache_busy: 35738
+rx13_cache_waive: 448
+rx14_packets: 51910671
+rx14_bytes: 148498131905
+rx14_csum_complete: 51910671
+rx14_csum_unnecessary: 0
+rx14_csum_unnecessary_inner: 0
+rx14_csum_none: 0
+rx14_xdp_drop: 0
+rx14_xdp_tx: 0
+rx14_xdp_tx_full: 0
+rx14_lro_packets: 0
+rx14_lro_bytes: 0
+rx14_removed_vlan_packets: 51910671
+rx14_wqe_err: 0
+rx14_mpwqe_filler: 560115
+rx14_buff_alloc_err: 0
+rx14_cqe_compress_blks: 0
+rx14_cqe_compress_pkts: 0
+rx14_page_reuse: 0
+rx14_cache_reuse: 36938042
+rx14_cache_full: 40807
+rx14_cache_empty: 896
+rx14_cache_busy: 40966
+rx14_cache_waive: 448
+rx15_packets: 50228252
+rx15_bytes: 131679010692
+rx15_csum_complete: 50228252
+rx15_csum_unnecessary: 0
+rx15_csum_unnecessary_inner: 0
+rx15_csum_none: 0
+rx15_xdp_drop: 0
+rx15_xdp_tx: 0
+rx15_xdp_tx_full: 0
+rx15_lro_packets: 0
+rx15_lro_bytes: 0
+rx15_removed_vlan_packets: 50228252
+rx15_wqe_err: 0
+rx15_mpwqe_filler: 494231
+rx15_buff_alloc_err: 0
+rx15_cqe_compress_blks: 0
+rx15_cqe_compress_pkts: 0
+rx15_page_reuse: 0
+rx15_cache_reuse: 32755717
+rx15_cache_full: 39868
+rx15_cache_empty: 896
+rx15_cache_busy: 40059
+rx15_cache_waive: 448
+tx0_packets: 101488959
+tx0_bytes: 335856818753
+tx0_tso_packets: 7617176
+tx0_tso_bytes: 254762689311
+tx0_tso_inner_packets: 0
+tx0_tso_inner_bytes: 0
+tx0_csum_partial: 77672225
+tx0_csum_partial_inner: 0
+tx0_added_vlan_packets: 77781033
+tx0_nop: 2315562
+tx0_csum_none: 110719
+tx0_stopped: 0
+tx0_wake: 0
+tx0_dropped: 0
+tx0_xmit_more: 69985
+tx1_packets: 88553947
+tx1_bytes: 279717042611
+tx1_tso_packets: 6134614
+tx1_tso_bytes: 201142567801
+tx1_tso_inner_packets: 0
+tx1_tso_inner_bytes: 0
+tx1_csum_partial: 69810557
+tx1_csum_partial_inner: 0
+tx1_added_vlan_packets: 69823541
+tx1_nop: 2070460
+tx1_csum_none: 24514
+tx1_stopped: 0
+tx1_wake: 0
+tx1_dropped: 0
+tx1_xmit_more: 53698
+tx2_packets: 100501778
+tx2_bytes: 325126406549
+tx2_tso_packets: 7419598
+tx2_tso_bytes: 242732784420
+tx2_tso_inner_packets: 0
+tx2_tso_inner_bytes: 0
+tx2_csum_partial: 77886985
+tx2_csum_partial_inner: 0
+tx2_added_vlan_packets: 77897530
+tx2_nop: 2315723
+tx2_csum_none: 12435
+tx2_stopped: 0
+tx2_wake: 0
+tx2_dropped: 0
+tx2_xmit_more: 71652
+tx3_packets: 88832819
+tx3_bytes: 282363305759
+tx3_tso_packets: 6201782
+tx3_tso_bytes: 203218948220
+tx3_tso_inner_packets: 0
+tx3_tso_inner_bytes: 0
+tx3_csum_partial: 69943913
+tx3_csum_partial_inner: 0
+tx3_added_vlan_packets: 69947116
+tx3_nop: 2074347
+tx3_csum_none: 5248
+tx3_stopped: 0
+tx3_wake: 0
+tx3_dropped: 0
+tx3_xmit_more: 55002
+tx4_packets: 97995446
+tx4_bytes: 286873178203
+tx4_tso_packets: 6358204
+tx4_tso_bytes: 204229370600
+tx4_tso_inner_packets: 0
+tx4_tso_inner_bytes: 0
+tx4_csum_partial: 79053512
+tx4_csum_partial_inner: 0
+tx4_added_vlan_packets: 79062734
+tx4_nop: 2333750
+tx4_csum_none: 11386
+tx4_stopped: 0
+tx4_wake: 0
+tx4_dropped: 0
+tx4_xmit_more: 61145
+tx5_packets: 90771920
+tx5_bytes: 293042167667
+tx5_tso_packets: 6394451
+tx5_tso_bytes: 214496255729
+tx5_tso_inner_packets: 0
+tx5_tso_inner_bytes: 0
+tx5_csum_partial: 70830851
+tx5_csum_partial_inner: 0
+tx5_added_vlan_packets: 70835498
+tx5_nop: 2102100
+tx5_csum_none: 7307
+tx5_stopped: 0
+tx5_wake: 0
+tx5_dropped: 0
+tx5_xmit_more: 58591
+tx6_packets: 100978251
+tx6_bytes: 320559759542
+tx6_tso_packets: 7232798
+tx6_tso_bytes: 236778913958
+tx6_tso_inner_packets: 0
+tx6_tso_inner_bytes: 0
+tx6_csum_partial: 78830319
+tx6_csum_partial_inner: 0
+tx6_added_vlan_packets: 78924502
+tx6_nop: 2341030
+tx6_csum_none: 96577
+tx6_stopped: 0
+tx6_wake: 0
+tx6_dropped: 0
+tx6_xmit_more: 63864
+tx7_packets: 96408152
+tx7_bytes: 297149746576
+tx7_tso_packets: 6758183
+tx7_tso_bytes: 215257425488
+tx7_tso_inner_packets: 0
+tx7_tso_inner_bytes: 0
+tx7_csum_partial: 76385194
+tx7_csum_partial_inner: 0
+tx7_added_vlan_packets: 76402247
+tx7_nop: 2265638
+tx7_csum_none: 18630
+tx7_stopped: 0
+tx7_wake: 0
+tx7_dropped: 0
+tx7_xmit_more: 62679
+tx8_packets: 15216684
+tx8_bytes: 35186202170
+tx8_tso_packets: 439691
+tx8_tso_bytes: 12024894868
+tx8_tso_inner_packets: 0
+tx8_tso_inner_bytes: 0
+tx8_csum_partial: 14161457
+tx8_csum_partial_inner: 0
+tx8_added_vlan_packets: 14161993
+tx8_nop: 409675
+tx8_csum_none: 537
+tx8_stopped: 0
+tx8_wake: 0
+tx8_dropped: 0
+tx8_xmit_more: 6691
+tx9_packets: 16740243
+tx9_bytes: 30882136330
+tx9_tso_packets: 267293
+tx9_tso_bytes: 6943824829
+tx9_tso_inner_packets: 0
+tx9_tso_inner_bytes: 0
+tx9_csum_partial: 16134406
+tx9_csum_partial_inner: 0
+tx9_added_vlan_packets: 16134706
+tx9_nop: 461359
+tx9_csum_none: 300
+tx9_stopped: 0
+tx9_wake: 0
+tx9_dropped: 0
+tx9_xmit_more: 7482
+tx10_packets: 16662340
+tx10_bytes: 29239263106
+tx10_tso_packets: 218691
+tx10_tso_bytes: 5602210884
+tx10_tso_inner_packets: 0
+tx10_tso_inner_bytes: 0
+tx10_csum_partial: 16172484
+tx10_csum_partial_inner: 0
+tx10_added_vlan_packets: 16172916
+tx10_nop: 461459
+tx10_csum_none: 432
+tx10_stopped: 0
+tx10_wake: 0
+tx10_dropped: 0
+tx10_xmit_more: 6885
+tx11_packets: 16570337
+tx11_bytes: 28577455550
+tx11_tso_packets: 209589
+tx11_tso_bytes: 5373605557
+tx11_tso_inner_packets: 0
+tx11_tso_inner_bytes: 0
+tx11_csum_partial: 16099728
+tx11_csum_partial_inner: 0
+tx11_added_vlan_packets: 16100300
+tx11_nop: 459032
+tx11_csum_none: 573
+tx11_stopped: 0
+tx11_wake: 0
+tx11_dropped: 0
+tx11_xmit_more: 6970
+tx12_packets: 16477648
+tx12_bytes: 28145046151
+tx12_tso_packets: 201593
+tx12_tso_bytes: 5156616142
+tx12_tso_inner_packets: 0
+tx12_tso_inner_bytes: 0
+tx12_csum_partial: 16026002
+tx12_csum_partial_inner: 0
+tx12_added_vlan_packets: 16026511
+tx12_nop: 456695
+tx12_csum_none: 510
+tx12_stopped: 0
+tx12_wake: 0
+tx12_dropped: 0
+tx12_xmit_more: 5717
+tx13_packets: 16375757
+tx13_bytes: 27791324750
+tx13_tso_packets: 197598
+tx13_tso_bytes: 5055962475
+tx13_tso_inner_packets: 0
+tx13_tso_inner_bytes: 0
+tx13_csum_partial: 15932199
+tx13_csum_partial_inner: 0
+tx13_added_vlan_packets: 15932614
+tx13_nop: 454077
+tx13_csum_none: 416
+tx13_stopped: 0
+tx13_wake: 0
+tx13_dropped: 0
+tx13_xmit_more: 6374
+tx14_packets: 16305671
+tx14_bytes: 27541818451
+tx14_tso_packets: 196115
+tx14_tso_bytes: 5019709738
+tx14_tso_inner_packets: 0
+tx14_tso_inner_bytes: 0
+tx14_csum_partial: 15864262
+tx14_csum_partial_inner: 0
+tx14_added_vlan_packets: 15864874
+tx14_nop: 452049
+tx14_csum_none: 614
+tx14_stopped: 0
+tx14_wake: 0
+tx14_dropped: 0
+tx14_xmit_more: 6145
+tx15_packets: 16237939
+tx15_bytes: 27233534311
+tx15_tso_packets: 194183
+tx15_tso_bytes: 4956139310
+tx15_tso_inner_packets: 0
+tx15_tso_inner_bytes: 0
+tx15_csum_partial: 15802904
+tx15_csum_partial_inner: 0
+tx15_added_vlan_packets: 15803615
+tx15_nop: 450168
+tx15_csum_none: 711
+tx15_stopped: 0
+tx15_wake: 0
+tx15_dropped: 0
+tx15_xmit_more: 5530
