@@ -115,7 +115,7 @@ static std::string out_data(const std::string& label, const Interface::ifstats_t
 void EthQApp::winmode_redraw()
 {
 	static auto header = out_hdr({ "NIC", "TX pkts", "RX pkts", "TX bytes", "RX bytes", "TX Mbps", "RX Mbps" });
-	auto& w = stdscr;
+	auto w = stdscr;
 
 	// output clamped to screen size
 	auto wstr = [&](const std::string& s, bool pad = false) {
