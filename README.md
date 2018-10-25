@@ -26,7 +26,7 @@ The code currently supports the output from the following NIC drivers:
 
 - Broadcom `bnx2x`, `tg3`
 - Emulex `be2net`
-- Intel `igb`, `ixgbe`, `i40e`
+- Intel `e1000e`, `igb`, `ixgbe`, `i40e`
 - Mellanox `mlx5_core`
 - RealTek `r8169`
 - VMware `vmxnet3`
