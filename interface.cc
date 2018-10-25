@@ -13,7 +13,7 @@
 #include "interface.h"
 #include "parser.h"
 
-Interface::Interface(const std::string& name)
+Interface::Interface(const std::string& name, bool generic)
 	: _name(name)
 {
 	ethtool = new Ethtool(name);
@@ -21,16 +21,24 @@ Interface::Interface(const std::string& name)
 
 	// find the right code to parse this NIC's stats output
 	auto driver = ethtool->driver();
+	const auto info = driver + ":" + name;
 
 	auto parser = StringsetParser::find(driver);
 	if (!parser) {
-		throw std::runtime_error("Unsupported NIC driver (" + driver + ":" + name + ")");
+		if (!generic) {
+			throw std::runtime_error("Unsupported NIC driver " + info);
+		}
+
+		parser = StringsetParser::find("generic");
+		if (!generic) {
+			throw std::runtime_error("Failed fallback from " + info + " to generic");
+		}
 	}
 
 	// parse the list of stats strings
 	build_stats_map(parser);
 	if (tmap.size() == 0 && qmap.size() == 0) {
-		throw std::runtime_error("couldn't parse NIC stats");
+		throw std::runtime_error("couldn't parse NIC stats for " + info);
 	}
 }
 

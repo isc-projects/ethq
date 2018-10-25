@@ -12,7 +12,7 @@
 #include "parser.h"
 
 static RegexParser generic(
-	{ "r8169", "e1000e" },
+	{ "generic", "r8169", "e1000e" },
 	{ "^(rx|tx)_(bytes|packets)$", { 1, 2 } },
 	RegexParser::queue_nomatch
 );

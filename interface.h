@@ -54,7 +54,7 @@ private:
 	void				build_stats_map(StringsetParser *parser);
 
 public:
-	Interface(const std::string& name);
+	Interface(const std::string& name, bool generic = false);
 	~Interface();
 
 public:

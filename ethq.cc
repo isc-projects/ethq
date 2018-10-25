@@ -62,7 +62,9 @@ static void usage(int status = EXIT_SUCCESS)
 {
 	using namespace std;
 
-	cerr << "usage: ethq [-t] <interface> [interface ...]" << endl;
+	cerr << "usage: ethq [-g] [-t] <interface> [interface ...]" << endl;
+	cerr << "  -g : attempt generic driver fallback" << endl;
+	cerr << "  -t : use text mode" << endl;
 
 	exit(status);
 }
@@ -246,9 +248,13 @@ void EthQApp::run()
 EthQApp::EthQApp(int argc, char *argv[])
 {
 	int opt;
+	bool generic = false;
 
-	while ((opt = getopt(argc, argv, "th")) != -1) {
+	while ((opt = getopt(argc, argv, "ght")) != -1) {
 		switch (opt) {
+			case 'g':
+				generic = true;
+				break;
 			case 't':
 				winmode = false;
 				break;
@@ -261,7 +267,7 @@ EthQApp::EthQApp(int argc, char *argv[])
 
 	// connect to the interface(s)
 	while (optind < argc) {
-		ifaces.emplace_back(std::make_shared<Interface>(argv[optind++]));
+		ifaces.emplace_back(std::make_shared<Interface>(argv[optind++], generic));
 	}
 
 	if (ifaces.size() == 0) {
