@@ -31,6 +31,7 @@ The code currently supports the output from the following NIC drivers:
 - Intel `e1000e`, `igb`, `ixgbe`, `i40e`
 - Mellanox `mlx5_core`
 - RealTek `r8169`
+- Virtio `virtio_net`
 - VMware `vmxnet3`
 
 The `-g` flag allows for fallback to a generic driver that knows how

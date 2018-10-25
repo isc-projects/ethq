@@ -8,7 +8,7 @@ TARGETS		= ethq ethq_test
 
 DRIVER_OBJS	= drv_generic.o \
 		  drv_bcm.o drv_emulex.o drv_intel.o drv_mellanox.o \
-		  drv_vmware.o
+		  drv_virtio.o drv_vmware.o
 
 all:		$(TARGETS)
 
