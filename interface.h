@@ -23,9 +23,12 @@ class Interface {
 
 public:
 	//
-	// the four combinations of rx/tx and packets/bytes are stored
-	// in this union, so that they can either be addressed by index
-	// or by name
+	// the four combinations of rx/tx and packets/bytes
+	// are stored in this structure thus:
+	//   0 : tx packets
+	//   1 : rx packets
+	//   2 : tx bytes
+	//   3 : rx bytes
 	//
 	typedef struct {
 		OptVal			counts[4];

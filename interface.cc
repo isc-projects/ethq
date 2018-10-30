@@ -121,6 +121,11 @@ const Interface::ifstats_t& Interface::total_stats() const
 	return tstats;
 }
 
+size_t get_offset(bool rx, bool bytes)
+{
+	return rx + 2 * bytes;
+}
+
 void Interface::build_stats_map(StringsetParser* parser)
 {
 	size_t qcount = 0;
@@ -141,16 +146,14 @@ void Interface::build_stats_map(StringsetParser* parser)
 		//
 		bool total_found = parser->match_total(names[i], state[i], rx, bytes);
 		if (total_found) {
-			// calculate offset into the four entry structure
-			auto offset = static_cast<size_t>(rx) + 2 * static_cast<size_t>(bytes);
-
-			tmap[i] = offset;
+			// save offset into the four entry structure
+			tmap[i] = get_offset(rx, bytes);
 		}
 
 		//
 		// try to map the stringset entry to a queue - pass the initially
 		// read value too, for those drivers (e.g. vmxnet3) that store the
-		// queue number if a key-value pair
+		// queue number in a key-value pair
 		//
 		bool queue_found = parser->match_queue(names[i], state[i], rx, bytes, queue);
 
@@ -161,7 +164,7 @@ void Interface::build_stats_map(StringsetParser* parser)
 		if (queue_found && (state[i] > 0)) {	// ignore zero-counters
 
 			// calculate offset into the four entry structure
-			auto offset = static_cast<size_t>(rx) + 2 * static_cast<size_t>(bytes);
+			auto offset = get_offset(rx, bytes);
 
 			// and populate it
 			qmap[i] = queue_entry_t { queue, offset };
