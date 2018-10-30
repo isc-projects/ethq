@@ -1,6 +1,6 @@
 CXXFLAGS	= -O3 -std=c++11 -Wall -Werror
 
-LDFLAGS		=
+LDFLAGS		= -s
 
 LIBS_CURSES	= -lncurses
 
