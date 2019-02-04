@@ -36,6 +36,7 @@ private:	// network state
 
 private:	// time handling
 	timespec		now;
+	timespec		interval = { 1, 0 };
 	clockid_t		clock = CLOCK_REALTIME;
 	char			timebuf[9];
 
@@ -86,7 +87,7 @@ static std::string out_hdr(const std::array<std::string, cols.size()>& hdrs)
 	return out.str();
 }
 
-static std::string out_data(const std::string& label, const Interface::ifstats_t& stats)
+static std::string out_data(const std::string& label, const Interface::ifstats_t& stats, const timespec& interval)
 {
 	using namespace std;
 
@@ -102,7 +103,9 @@ static std::string out_data(const std::string& label, const Interface::ifstats_t
 		out << setw(cols[n]) << fixed << setprecision(3);
 		const auto& bps = q[n - 3];
 		if (bps) {
-			out << static_cast<uint64_t>(bps) * 8 / 1e6;
+			auto mbps = static_cast<uint64_t>(bps) * 8 / 1e6;
+			mbps /= (interval.tv_sec + interval.tv_nsec / 1e9);
+			out << mbps;
 		} else {
 			out << "-";
 		}
@@ -149,12 +152,12 @@ void EthQApp::winmode_redraw()
 	for (auto& iface: ifaces) {
 		// show totals
 		wattron(w, A_BOLD);
-		wstr(out_data(iface->name(), iface->total_stats()));
+		wstr(out_data(iface->name(), iface->total_stats(), interval));
 		wattroff(w, A_BOLD);
 
 		// show per-queue data
 		for (size_t i = 0, n = iface->queue_count(); i < n; ++i) {
-			wstr(out_data(std::to_string(i), iface->queue_stats(i)));
+			wstr(out_data(std::to_string(i), iface->queue_stats(i), interval));
 		}
 	}
 
@@ -168,10 +171,10 @@ void EthQApp::textmode_redraw()
 	std::cout << header << std::endl;
 
 	for (auto& iface: ifaces) {
-		std::cout << out_data(iface->name(), iface->total_stats());
+		std::cout << out_data(iface->name(), iface->total_stats(), interval);
 		std::cout << std::endl;
 		for (size_t i = 0, n = iface->queue_count(); i < n; ++i) {
-			std::cout << out_data(std::to_string(i), iface->queue_stats(i));
+			std::cout << out_data(std::to_string(i), iface->queue_stats(i), interval);
 			std::cout << std::endl;
 		}
 	}
@@ -186,8 +189,12 @@ void EthQApp::time_get()
 
 void EthQApp::time_wait()
 {
-	now.tv_nsec = 0;
-	now.tv_sec += 1;
+	now.tv_nsec += interval.tv_nsec;
+	if (now.tv_nsec >= 1e9) {
+		now.tv_nsec -= 1e9;
+		now.tv_sec += 1;
+	}
+	now.tv_sec += interval.tv_sec;
 
 	while (true) {
 		auto res = clock_nanosleep(clock, TIMER_ABSTIME, &now, nullptr);
