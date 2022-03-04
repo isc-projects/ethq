@@ -19,7 +19,7 @@
 #include <regex>
 
 //
-// abstrat base class for stats string parsers, includes a static
+// abstract base class for stats string parsers, includes a static
 // registry that maps from NIC driver names to parsers
 //
 
@@ -61,7 +61,9 @@ public:
 // groups within the regex
 //
 // NB: match on "direction" requires an exact match for "rx"
+//
 //     match on "type" requires an exact match for "bytes"
+//     or "octets"
 //
 class RegexParser : public StringsetParser {
 
