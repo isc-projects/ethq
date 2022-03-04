@@ -19,6 +19,6 @@ static RegexParser intel_generic(
 
 static RegexParser intel_i40e(
 	{ "i40e" },
-	RegexParser::total_nomatch,
+	RegexParser::total_generic,
 	{ "^(rx|tx)-(\\d+)\\.(?:\\1_)?(bytes|packets)$", { 1, 3, 2 } }
 );

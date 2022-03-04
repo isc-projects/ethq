@@ -78,6 +78,7 @@ public:
 	typedef std::pair<std::string, queue_order_t>	queue_str_t;
 
 public:
+	static total_str_t	total_generic;
 	static total_str_t	total_nomatch;
 	static queue_str_t 	queue_nomatch;
 

@@ -13,6 +13,6 @@
 
 static RegexParser generic(
 	{ "generic", "r8169", "e1000e" },
-	{ "^(rx|tx)_(bytes|packets)$", { 1, 2 } },
+	RegexParser::total_generic,
 	RegexParser::queue_nomatch
 );
