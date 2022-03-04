@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 {
 	// parse command line args
 	if (argc < 2 || argc > 3) {
-		std::cerr << "usage: parsetest <driver> [infile]" << std::endl;
+		std::cerr << "usage: ethq_test <driver> [infile]" << std::endl;
 		return EXIT_FAILURE;
 	}
 
