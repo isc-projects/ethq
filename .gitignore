@@ -1,0 +1,10 @@
+# a basic gitignore file
+
+# some backup editor file extensions
+*~
+*.bak
+
+# compiled files
+*.o
+ethq
+ethq_test
