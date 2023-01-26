@@ -1,6 +1,5 @@
 /*
  * Copyright (C) Internet Systems Consortium, Inc. ("ISC")
- * Copyright (C) 2022 Intel Corporation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -13,8 +12,14 @@
 #include "parser.h"
 
 static RegexParser intel_generic(
-	{ "ixgbe", "igb", "ice" },
+	{ "ixgbe", "igb" },
 	RegexParser::total_nomatch,
+	{ "^(rx|tx)_queue_(\\d+)_(bytes|packets)$", { 1, 3, 2 } }
+);
+
+static RegexParser intel_ice(
+	{ "ice" },
+	{ "^(rx|tx)_(bytes|unicast|broadcast|multicast)$", { 1, 2 } },
 	{ "^(rx|tx)_queue_(\\d+)_(bytes|packets)$", { 1, 3, 2 } }
 );
 
@@ -26,6 +31,6 @@ static RegexParser intel_i40e(
 
 static RegexParser intel_iavf(
 	{ "iavf" },
-	RegexParser::total_nomatch,
+	{ "^(rx|tx)_(bytes|unicast|broadcast|multicast)$", { 1, 2 } },
 	{ "^(rx|tx)-(\\d+)\\.(?:\\1_)?(bytes|packets)$", { 1, 3, 2 } }
 );
