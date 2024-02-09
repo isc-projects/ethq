@@ -12,11 +12,14 @@
 #include <regex>
 #include "parser.h"
 
-StringsetParser::parsermap_t StringsetParser::parsers;
-
 StringsetParser::StringsetParser(const driverlist_t& drivers)
 {
 	save(drivers);
+}
+
+static StringsetParser::parsermap_t & get_parsers() {
+	static StringsetParser::parsermap_t parsers;
+	return parsers;
 }
 
 void StringsetParser::save(const driverlist_t& drivers) {
@@ -26,12 +29,13 @@ void StringsetParser::save(const driverlist_t& drivers) {
 }
 
 void StringsetParser::save(const std::string& name) {
-	parsers[name] = this;
+
+	get_parsers()[name] = this;
 }
 
 StringsetParser::ptr_t StringsetParser::find(const std::string& driver) {
-	auto iter = parsers.find(driver);
-	if (iter != parsers.end()) {
+	auto iter = get_parsers().find(driver);
+	if (iter != get_parsers().end()) {
 		return iter->second;
 	} else {
 		return nullptr;
