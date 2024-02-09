@@ -26,12 +26,14 @@ driver specific.
 
 The code currently supports the output from the following NIC drivers:
 
+- Amazon AWS `ena`
 - Broadcom `bnx2`, `bnx2x`, `tg3`
 - Emulex `be2net`
 - Intel `e1000e`, `igb`, `ixgbe`, `i40e`, `iavf`, `ice`
 - Mellanox `mlx5_core`, `mlx4_en`
 - NXP `fsl_dpaa2_eth`
 - RealTek `r8169`
+- Solarflare `sfc`
 - Virtio `virtio_net`
 - VMware `vmxnet3`
 
