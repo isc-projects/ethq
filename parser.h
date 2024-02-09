@@ -30,9 +30,6 @@ public:
 	typedef std::map<std::string, ptr_t> parsermap_t;
 	typedef std::vector<std::string> driverlist_t;
 
-private:
-	static parsermap_t parsers;
-
 protected:
 	void save(const std::string& driver);
 	void save(const driverlist_t& drivers);
