@@ -1,0 +1,74 @@
+NIC statistics:
+[hw] rx frames: 92343581
+[hw] rx bytes: 48809586696
+[hw] rx mcast frames: 816094
+[hw] rx mcast bytes: 181447466
+[hw] rx bcast frames: 965862
+[hw] rx bcast bytes: 126041185
+[hw] tx frames: 331202545
+[hw] tx bytes: 383050568929
+[hw] tx mcast frames: 10936040
+[hw] tx mcast bytes: 2975608926
+[hw] tx bcast frames: 602592
+[hw] tx bcast bytes: 124871017
+[hw] rx filtered frames: 0
+[hw] rx discarded frames: 0
+[hw] rx nobuffer discards: 0
+[hw] tx discarded frames: 0
+[hw] tx confirmed frames: 331202545
+[hw] tx dequeued bytes: 383050568929
+[hw] tx dequeued frames: 331202545
+[hw] tx rejected bytes: 0
+[hw] tx rejected frames: 0
+[hw] tx pending frames: 0
+[drv] tx conf frames: 331202545
+[drv] tx conf bytes: 383050568929
+[drv] tx sg frames: 92122892
+[drv] tx sg bytes: 129969786399
+[drv] tx tso frames: 44078304
+[drv] tx tso bytes: 65582872849
+[drv] rx sg frames: 0
+[drv] rx sg bytes: 0
+[drv] tx converted sg frames: 4803265
+[drv] tx converted sg bytes: 399365079
+[drv] enqueue portal busy: 0
+[drv] dequeue portal busy: 0
+[drv] channel pull errors: 0
+[drv] cdan: 189818939
+[drv] xdp drop: 0
+[drv] xdp tx: 0
+[drv] xdp tx errors: 0
+[drv] xdp redirect: 0
+[qbman] rx pending frames: 0
+[qbman] rx pending bytes: 0
+[qbman] tx conf pending frames: 0
+[qbman] tx conf pending bytes: 0
+[qbman] buffer count: 20396
+[mac] rx 64 bytes: 4496630
+[mac] rx 65-127 bytes: 46601925
+[mac] rx 128-255 bytes: 9955626
+[mac] rx 256-511 bytes: 2078612
+[mac] rx 512-1023 bytes: 2130788
+[mac] rx 1024-1518 bytes: 27080001
+[mac] rx 1519-max bytes: 0
+[mac] rx frags: 0
+[mac] rx jabber: 0
+[mac] rx frame discards: 0
+[mac] rx align errors: 0
+[mac] tx undersized: 0
+[mac] rx oversized: 0
+[mac] rx pause: 0
+[mac] tx b-pause: 0
+[mac] rx bytes: 49178961174
+[mac] rx m-cast: 816094
+[mac] rx b-cast: 965862
+[mac] rx all frames: 92343583
+[mac] rx u-cast: 90561627
+[mac] rx frame errors: 0
+[mac] tx bytes: 384409304192
+[mac] tx m-cast: 10936040
+[mac] tx b-cast: 602592
+[mac] tx u-cast: 319663913
+[mac] tx frame errors: 0
+[mac] rx frames ok: 92343583
+[mac] tx frames ok: 331202545
