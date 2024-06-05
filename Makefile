@@ -1,4 +1,4 @@
-CXXFLAGS	= -O3 -std=c++11 -Wall -Werror
+CXXFLAGS	= -O3 -std=c++11 -Wall -Werror -ffat-lto-objects
 
 LDFLAGS		= -s
 

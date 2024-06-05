@@ -34,6 +34,8 @@ public:
 		re2.assign("^\\s*[bum]cast (pkts|bytes) (rx|tx)$");
 	}
 
+	virtual ~VMXNet3Parser() = default;
+
 	bool match_queue(const std::string& key, size_t value, bool& rx, bool& bytes, size_t& queue) {
 
 		// check for match againt queue number

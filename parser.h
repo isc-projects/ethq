@@ -31,7 +31,7 @@ public:
 	typedef std::vector<std::string> driverlist_t;
 
 private:
-	static parsermap_t parsers;
+	static parsermap_t *parsers;
 
 protected:
 	void save(const std::string& driver);
@@ -39,6 +39,7 @@ protected:
 
 public:
 	StringsetParser(const driverlist_t& drivers);
+	virtual ~StringsetParser() = default;
 
 	virtual bool match_total(const std::string& key, size_t value, bool& rx, bool& bytes) {
 		return false;
@@ -92,6 +93,8 @@ public:
 	RegexParser(const driverlist_t& drivers,
 		    const total_str_t& total,
 		    const queue_str_t& queue);
+
+	virtual ~RegexParser() = default;
 
 	virtual bool match_total(const std::string& key, size_t value, bool& rx, bool& bytes);
 	virtual bool match_queue(const std::string& key, size_t value, bool& rx, bool& bytes, size_t& qnum);
