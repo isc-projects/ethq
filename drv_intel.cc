@@ -13,7 +13,7 @@
 
 static RegexParser intel_generic(
 	{ "ixgbe", "igb" },
-	RegexParser::total_nomatch,
+	RegexParser::total_nomatch(),
 	{ "^(rx|tx)_queue_(\\d+)_(bytes|packets)$", { 1, 3, 2 } }
 );
 
@@ -25,7 +25,7 @@ static RegexParser intel_ice(
 
 static RegexParser intel_i40e(
 	{ "i40e" },
-	RegexParser::total_generic,
+	RegexParser::total_generic(),
 	{ "^(rx|tx)-(\\d+)\\.(?:\\1_)?(bytes|packets)$", { 1, 3, 2 } }
 );
 

@@ -13,6 +13,6 @@
 
 static RegexParser mellanox_mlx5_core( 
 	{ "mlx5_core", "mlx4_en" },
-	RegexParser::total_generic,
+	RegexParser::total_generic(),
 	{ "^(rx|tx)(\\d+)_(?:0_)?(bytes|packets)$", { 1, 3, 2 } }
 );

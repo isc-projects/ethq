@@ -13,6 +13,6 @@
 
 static RegexParser emulex_be2net (
 	{ "be2net" },
-	RegexParser::total_nomatch,
+	RegexParser::total_nomatch(),
 	{ "^(rx|tx)q(\\d+): \\1_(bytes|pkts)$", { 1, 3, 2 } }
 );

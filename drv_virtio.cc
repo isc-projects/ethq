@@ -13,6 +13,6 @@
 
 static RegexParser virtio_net(
 	{ "virtio_net" },
-	RegexParser::total_nomatch,
+	RegexParser::total_nomatch(),
 	{ "^(rx|tx)_queue_(\\d+)_(bytes|packets)$", { 1, 3, 2 } }
 );
