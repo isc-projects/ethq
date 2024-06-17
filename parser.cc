@@ -43,11 +43,17 @@ StringsetParser::ptr_t StringsetParser::find(const std::string& driver) {
 }
 
 // parser for the most common generic output format
-RegexParser::total_str_t RegexParser::total_generic = { "^(rx|tx)_(bytes|packets)$", { 1, 2 } };
+RegexParser::total_str_t RegexParser::total_generic() {
+       return total_str_t { "^(rx|tx)_(bytes|packets)$", { 1, 2 } };
+}
 
 // parsers used when the driver does not support total counters or per-queue counters
-RegexParser::total_str_t RegexParser::total_nomatch = { "", { 0, 0 } };
-RegexParser::queue_str_t RegexParser::queue_nomatch = { "", { 0, 0, 0 } };
+RegexParser::total_str_t RegexParser::total_nomatch() {
+	return total_str_t { "", { 0, 0 } };
+}
+RegexParser::queue_str_t RegexParser::queue_nomatch() {
+	return queue_str_t { "", { 0, 0, 0 } };
+}
 
 RegexParser::RegexParser(
 	const driverlist_t& drivers,

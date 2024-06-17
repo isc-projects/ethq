@@ -13,6 +13,6 @@
 
 static RegexParser amazon_ena(
 	{ "ena" },
-	RegexParser::total_nomatch,
+	RegexParser::total_nomatch(),
 	{ "^queue_(\\d+)_(rx|tx)_(bytes|cnt)$", { 2, 3, 1 } }
 );

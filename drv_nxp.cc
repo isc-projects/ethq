@@ -14,5 +14,5 @@
 static RegexParser nxp_daap2(
 	{ "fsl_dpaa2_eth" },
 	{ "^\\[hw\\] (rx|tx) (bytes|frames)$", { 1, 2 } },
-	RegexParser::queue_nomatch
+	RegexParser::queue_nomatch()
 );

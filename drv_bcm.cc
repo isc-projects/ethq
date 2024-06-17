@@ -20,11 +20,11 @@ static RegexParser bnx2(
 static RegexParser bnx2x(
 	{ "bnx2x" },
 	{ "^(rx|tx)_(bytes|[bum]cast_packets)$", { 1, 2 } },
-	RegexParser::queue_nomatch
+	RegexParser::queue_nomatch()
 );
 
 static RegexParser tg3(
 	{ "tg3" },
 	{ "^(rx|tx)_(octets|[bum]cast_packets)$", { 1, 2 } },
-	RegexParser::queue_nomatch
+	RegexParser::queue_nomatch()
 );

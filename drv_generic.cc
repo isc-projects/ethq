@@ -13,6 +13,6 @@
 
 static RegexParser generic(
 	{ "generic", "r8169", "e1000e" },
-	RegexParser::total_generic,
-	RegexParser::queue_nomatch
+	RegexParser::total_generic(),
+	RegexParser::queue_nomatch()
 );
