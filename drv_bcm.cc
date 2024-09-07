@@ -11,6 +11,12 @@
 
 #include "parser.h"
 
+static RegexParser bnxt_en(
+	{ "bnxt_en" },
+	{ "^(rx|tx)_(bytes|[bum]cast_frames)$", { 1, 2 } },
+	{ "^\\[(\\d+)\\]: (rx|tx)_(bytes|[bum]cast_packets)$", { 2, 3, 1 } }
+);
+
 static RegexParser bnx2(
 	{ "bnx2" },
 	{ "^(rx|tx)_(bytes|[bum]cast_packets)$", { 1, 2 } },
